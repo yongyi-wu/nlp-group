@@ -2,6 +2,10 @@
 
 export DECOMP_DIR=$(pwd)/DecompRC/DecompRC
 
+# install required packages
+sudo apt install unzip
+sudo apt install make
+
 # set up environment
 source $(conda info --base)/etc/profile.d/conda.sh
 conda env create -f environment.yml
