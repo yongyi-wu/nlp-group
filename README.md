@@ -1,9 +1,13 @@
 # 11-711 Group Project
 
+## Install Dependencies
+
+```bash
+./setup.sh
+```
+
 ## Reproduce Experiments
 
 ```bash
-chmod 744 setup.sh reproduce.sh
-./setup.sh
 ./reproduce.sh
 ```

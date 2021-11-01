@@ -15,8 +15,8 @@ conda activate decomp
 cd $DECOMP_DIR
 gdown --id 1p7VrJIEmUY9tAWmx31chhStS-KoRWOJQ
 unzip DecompRC-all-models-and-data.zip
-mv DecompRC-all-models-and-data/data DecompRC-all-models-and-data/model .
-rm -r DecompRC-all-models-and-data.zip DecompRC-all-models-and-data
+mv DecompRC-all-models-and-data/data DecompRC-all-models-and-data/model $DECOMP_DIR
+rm -r DecompRC-all-models-and-data.zip DecompRC-all-models-and-data __MACOSX/
 
 # download HotpotQA dataset
 cd ${DECOMP_DIR}/data
