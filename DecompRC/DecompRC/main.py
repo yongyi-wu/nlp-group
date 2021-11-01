@@ -54,7 +54,7 @@ RawResult = collections.namedtuple("RawResult",
 
 def main():
     parser = argparse.ArgumentParser()
-    BERT_DIR = "/home/sewon/for-inference/model/uncased_L-12_H-768_A-12/"
+    BERT_DIR = "model/uncased_L-12_H-768_A-12/"
     ## Required parameters
     parser.add_argument("--bert_config_file", default=BERT_DIR+"bert_config.json", \
                         type=str, help="The config json file corresponding to the pre-trained BERT model. "
