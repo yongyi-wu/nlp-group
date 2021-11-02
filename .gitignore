@@ -3,6 +3,8 @@ __MACOSX
 data/
 model/
 out/
+exp/
+proc_data/
 
 # General
 .DS_Store
