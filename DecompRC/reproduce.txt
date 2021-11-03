@@ -1,0 +1,327 @@
+# Running decomposition model for bridging
+python3 main.py --do_predict --model span-predictor \
+                --output_dir out/decom-bridge \
+                --init_checkpoint model/decom-bridge/model.pt \
+                --predict_file data/hotpot-all/dev.json,data/decomposition-data/decomposition-bridge-dev-v1.json \
+                --max_seq_length 100 --max_n_answers 1 --prefix dev_ --with_key
+11/01/2021 17:23:17 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+11/01/2021 17:23:17 - INFO - __main__ -   Output directory () already exists and is not empty.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/01/2021 17:23:17 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+100%|██████████████████████████████████████████████████████████| 7557/7557 [00:00<00:00, 19368.80it/s]
+7557it [00:02, 3500.82it/s]
+11/01/2021 17:23:19 - INFO - __main__ -   ***** Running evaluation *****
+11/01/2021 17:23:19 - INFO - __main__ -     Num orig examples = 7557
+11/01/2021 17:23:19 - INFO - __main__ -     Num split examples = 7557
+11/01/2021 17:23:19 - INFO - __main__ -     Batch size = 256
+Loading from model/decom-bridge/model.pt
+Accuracy 0.015746989546116183
+11/01/2021 17:24:53 - INFO - __main__ -   Writing predictions to: out/decom-bridge/dev_predictions.json
+11/01/2021 17:24:53 - INFO - __main__ -   Writing nbest to: out/decom-bridge/dev_nbest_predictions.json
+('people in west africa with significant populations in ghana, ivory coast, liberia and sierra leone', 'which group of [ANSWER] use the ida?', 'which group of people in west africa with significant populations in ghana, ivory coast, liberia and sierra leone use the ida?', 'which group of people in west africa with significant populations in ghana, ivory coast, liberia and sierra leone use the ida?')
+11/01/2021 17:24:53 - INFO - __main__ -   Final Accuracy score: 1.575%
+# Running decomposition model for intersection
+python3 main.py --do_predict --model span-predictor \
+                --output_dir out/decom-intersec \
+                --init_checkpoint model/decom-intersec/model.pt \
+                --predict_file data/hotpot-all/dev.json,data/decomposition-data/decomposition-intersec-dev-v1.json \
+                --max_seq_length 100 --max_n_answers 1 --prefix dev_
+11/01/2021 17:24:55 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+11/01/2021 17:24:55 - INFO - __main__ -   Output directory () already exists and is not empty.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/01/2021 17:24:55 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+100%|██████████████████████████████████████████| 7471/7471 [00:00<00:00, 19460.39it/s]
+7471it [00:02, 3524.83it/s]
+11/01/2021 17:24:58 - INFO - __main__ -   ***** Running evaluation *****
+11/01/2021 17:24:58 - INFO - __main__ -     Num orig examples = 7471
+11/01/2021 17:24:58 - INFO - __main__ -     Num split examples = 7471
+11/01/2021 17:24:58 - INFO - __main__ -     Batch size = 256
+Loading from model/decom-intersec/model.pt
+Accuracy 0.006023290054878865
+11/01/2021 17:26:00 - INFO - __main__ -   Writing predictions to: out/decom-intersec/dev_predictions.json
+11/01/2021 17:26:00 - INFO - __main__ -   Writing nbest to: out/decom-intersec/dev_nbest_predictions.json
+('which group of people in west africa with significant populations in ghana, ivory coast, liberia and sierra leone ?', 'which use the ida? ?', 'which group of people in west africa with significant populations in ghana, ivory coast, liberia and sierra leone use the ida?', 'which group of people in west africa with significant populations in ghana, ivory coast, liberia and sierra leone use the ida?')
+11/01/2021 17:26:01 - INFO - __main__ -   Final Accuracy score: 0.602%
+# Preprocessing sub-questions for bridging
+python3 run_decomposition.py --task decompose --data_type dev_b --out_name out/decom-bridge
+and ed wood of which same nationality?
+were scott derrickson [ANSWER]
+7405 7405 7405
+# Answering to the first sub-question
+python3 main.py --do_predict --output_dir out/onehop \
+                --predict_file data/decomposed/dev_b.1.json \
+                --init_checkpoint model/onehop/model1.pt,model/onehop/model2.pt,model/onehop/model3.pt \
+                --prefix dev_b_1_ --n_best_size 4
+11/01/2021 17:26:06 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/01/2021 17:26:06 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+Load data/decomposed/dev_b.1.json, have 7405 data
+100%|████████████████████████████████████████████| 7405/7405 [00:17<00:00, 417.04it/s]
+[Parallel(n_jobs=10)]: Using backend LokyBackend with 10 concurrent workers.
+[Parallel(n_jobs=10)]: Done  21 tasks      | elapsed:    3.8s
+[Parallel(n_jobs=10)]: Done 142 tasks      | elapsed:   21.3s
+[Parallel(n_jobs=10)]: Done 345 tasks      | elapsed:   51.3s
+[Parallel(n_jobs=10)]: Done 628 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=10)]: Done 993 tasks      | elapsed:  2.4min
+[Parallel(n_jobs=10)]: Done 1438 tasks      | elapsed:  3.5min
+[Parallel(n_jobs=10)]: Done 1965 tasks      | elapsed:  4.8min
+[Parallel(n_jobs=10)]: Done 2572 tasks      | elapsed:  6.3min
+[Parallel(n_jobs=10)]: Done 3261 tasks      | elapsed:  8.0min
+[Parallel(n_jobs=10)]: Done 4030 tasks      | elapsed:  9.8min
+[Parallel(n_jobs=10)]: Done 4881 tasks      | elapsed: 11.9min
+[Parallel(n_jobs=10)]: Done 5812 tasks      | elapsed: 14.2min
+[Parallel(n_jobs=10)]: Done 6825 tasks      | elapsed: 16.7min
+[Parallel(n_jobs=10)]: Done 7405 out of 7405 | elapsed: 18.1min finished
+11/01/2021 17:44:31 - INFO - __main__ -   ***** Running evaluation *****
+11/01/2021 17:44:31 - INFO - __main__ -     Num orig examples = 7405
+11/01/2021 17:44:31 - INFO - __main__ -     Num split examples = 76738
+11/01/2021 17:44:31 - INFO - __main__ -     Batch size = 256
+Loading from model/onehop/model1.pt
+Loading from model/onehop/model2.pt
+Loading from model/onehop/model3.pt
+Evaluating: 100%|███████████████████████████████████| 300/300 [31:08<00:00,  6.23s/it]
+Evaluating: 100%|███████████████████████████████████| 300/300 [31:20<00:00,  6.27s/it]
+Evaluating:  15%|██████                                   | 44/300 [04:08<24:14,  5.68Evaluating:  15%|██████▏                                  | 45/300 [04:14<23:58,  5.64Evaluating:  15%|██████▎                                  | 46/300 [04:19<23:43,  5.60s/itEvaluating: 100%|████████████████████████████████████████| 300/300 [30:56<00:00,  6.19s/it]
+11/01/2021 19:18:38 - INFO - __main__ -   Writing predictions to: out/onehop/dev_b_1_predictions.json
+11/01/2021 19:18:38 - INFO - __main__ -   Writing nbest to: out/onehop/dev_b_1_nbest_predictions.json
+11/01/2021 19:18:41 - INFO - __main__ -   Final F1 score: 16.067%
+# Plugging the answer to the second sub-question
+python3 run_decomposition.py --task plug --data_type dev_b --topk 10
+data/decomposed/dev_b.1.json data/decomposed/dev_b.2.json
+# Answering to the second sub-question
+python3 main.py --do_predict --output_dir out/onehop \
+                --predict_file data/decomposed/dev_b.2.json \
+                --init_checkpoint model/onehop/model1.pt,model/onehop/model2.pt,model/onehop/model3.pt \
+                --prefix dev_b_2_ --n_best_size 4
+11/01/2021 19:18:48 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+11/01/2021 19:18:48 - INFO - __main__ -   Output directory () already exists and is not empty.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/01/2021 19:18:48 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+Load data/decomposed/dev_b.2.json, have 7405 data
+100%|██████████████████████████████████████████████████| 7405/7405 [00:18<00:00, 403.91it/s]
+[Parallel(n_jobs=10)]: Using backend LokyBackend with 10 concurrent workers.
+[Parallel(n_jobs=10)]: Done  21 tasks      | elapsed:    3.8s
+[Parallel(n_jobs=10)]: Done 142 tasks      | elapsed:   21.9s
+[Parallel(n_jobs=10)]: Done 345 tasks      | elapsed:   52.9s
+[Parallel(n_jobs=10)]: Done 628 tasks      | elapsed:  1.6min
+[Parallel(n_jobs=10)]: Done 993 tasks      | elapsed:  2.5min
+[Parallel(n_jobs=10)]: Done 1438 tasks      | elapsed:  3.6min
+[Parallel(n_jobs=10)]: Done 1965 tasks      | elapsed:  4.9min
+[Parallel(n_jobs=10)]: Done 2572 tasks      | elapsed:  6.5min
+[Parallel(n_jobs=10)]: Done 3261 tasks      | elapsed:  8.2min
+[Parallel(n_jobs=10)]: Done 4030 tasks      | elapsed: 10.1min
+[Parallel(n_jobs=10)]: Done 4881 tasks      | elapsed: 12.2min
+[Parallel(n_jobs=10)]: Done 5812 tasks      | elapsed: 14.6min
+[Parallel(n_jobs=10)]: Done 6825 tasks      | elapsed: 17.1min
+[Parallel(n_jobs=10)]: Done 7918 tasks      | elapsed: 19.9min
+[Parallel(n_jobs=10)]: Done 9093 tasks      | elapsed: 22.8min
+[Parallel(n_jobs=10)]: Done 10348 tasks      | elapsed: 26.0min
+[Parallel(n_jobs=10)]: Done 11685 tasks      | elapsed: 29.3min
+[Parallel(n_jobs=10)]: Done 13102 tasks      | elapsed: 32.9min
+[Parallel(n_jobs=10)]: Done 14601 tasks      | elapsed: 36.7min
+[Parallel(n_jobs=10)]: Done 16180 tasks      | elapsed: 40.6min
+[Parallel(n_jobs=10)]: Done 17841 tasks      | elapsed: 44.9min
+[Parallel(n_jobs=10)]: Done 19582 tasks      | elapsed: 49.3min
+[Parallel(n_jobs=10)]: Done 21405 tasks      | elapsed: 53.8min
+[Parallel(n_jobs=10)]: Done 23308 tasks      | elapsed: 58.7min
+[Parallel(n_jobs=10)]: Done 25293 tasks      | elapsed: 63.7min
+[Parallel(n_jobs=10)]: Done 27358 tasks      | elapsed: 68.8min
+[Parallel(n_jobs=10)]: Done 29505 tasks      | elapsed: 74.3min
+[Parallel(n_jobs=10)]: Done 29605 out of 29605 | elapsed: 74.6min finished
+11/01/2021 20:33:40 - INFO - __main__ -   ***** Running evaluation *****
+11/01/2021 20:33:40 - INFO - __main__ -     Num orig examples = 29605
+11/01/2021 20:33:40 - INFO - __main__ -     Num split examples = 307555
+11/01/2021 20:33:40 - INFO - __main__ -     Batch size = 256
+Loading from model/onehop/model1.pt
+Loading from model/onehop/model2.pt
+Loading from model/onehop/model3.pt
+Evaluating: 100%|█████████████████████████████████████| 1202/1202 [2:04:06<00:00,  6.20s/it]
+Evaluating: 100%|█████████████████████████████████████| 1202/1202 [2:05:40<00:00,  6.27s/it]
+Evaluating: 100%|█████████████████████████████████████| 1202/1202 [2:08:22<00:00,  6.41s/it]
+11/02/2021 02:54:17 - INFO - __main__ -   Writing predictions to: out/onehop/dev_b_2_predictions.json
+11/02/2021 02:54:17 - INFO - __main__ -   Writing nbest to: out/onehop/dev_b_2_nbest_predictions.json
+11/02/2021 02:54:27 - INFO - __main__ -   Final F1 score: 47.832%
+# Saving the answer through bridging
+python3 run_decomposition.py --task aggregate-bridge --data_type dev_b --topk 10
+# Preprocessing sub-questions for intersection
+python3 run_decomposition.py --task decompose --data_type dev_i --out_name out/decom-intersec
+were scott derrickson and ed wood ?
+were of the same nationality? ?
+7405 7405 7405
+# Answering to the first sub-question
+python3 main.py --do_predict --output_dir out/onehop \
+                --predict_file data/decomposed/dev_i.1.json \
+                --init_checkpoint model/onehop/model1.pt,model/onehop/model2.pt,model/onehop/model3.pt \
+                --prefix dev_i_1_ --n_best_size 4
+11/02/2021 02:54:47 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+11/02/2021 02:54:47 - INFO - __main__ -   Output directory () already exists and is not empty.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/02/2021 02:54:47 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+Load data/decomposed/dev_i.1.json, have 7405 data
+100%|██████████████████████████████████████████████████| 7405/7405 [00:17<00:00, 420.34it/s]
+[Parallel(n_jobs=10)]: Using backend LokyBackend with 10 concurrent workers.
+[Parallel(n_jobs=10)]: Done  21 tasks      | elapsed:    3.9s
+[Parallel(n_jobs=10)]: Done 142 tasks      | elapsed:   21.4s
+[Parallel(n_jobs=10)]: Done 345 tasks      | elapsed:   51.1s
+[Parallel(n_jobs=10)]: Done 628 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=10)]: Done 993 tasks      | elapsed:  2.4min
+[Parallel(n_jobs=10)]: Done 1438 tasks      | elapsed:  3.5min
+[Parallel(n_jobs=10)]: Done 1965 tasks      | elapsed:  4.8min
+[Parallel(n_jobs=10)]: Done 2572 tasks      | elapsed:  6.3min
+[Parallel(n_jobs=10)]: Done 3261 tasks      | elapsed:  7.9min
+[Parallel(n_jobs=10)]: Done 4030 tasks      | elapsed:  9.8min
+[Parallel(n_jobs=10)]: Done 4881 tasks      | elapsed: 11.9min
+[Parallel(n_jobs=10)]: Done 5812 tasks      | elapsed: 14.1min
+[Parallel(n_jobs=10)]: Done 6825 tasks      | elapsed: 16.6min
+[Parallel(n_jobs=10)]: Done 7405 out of 7405 | elapsed: 18.0min finished
+11/02/2021 03:13:06 - INFO - __main__ -   ***** Running evaluation *****
+11/02/2021 03:13:06 - INFO - __main__ -     Num orig examples = 7405
+11/02/2021 03:13:06 - INFO - __main__ -     Num split examples = 76843
+11/02/2021 03:13:06 - INFO - __main__ -     Batch size = 256
+Loading from model/onehop/model1.pt
+Loading from model/onehop/model2.pt
+Loading from model/onehop/model3.pt
+Evaluating: 100%|█████████████████████████████████████████| 301/301 [30:51<00:00,  6.15s/it]
+Evaluating: 100%|█████████████████████████████████████████| 301/301 [31:22<00:00,  6.25s/it]
+Evaluating: 100%|█████████████████████████████████████████| 301/301 [30:38<00:00,  6.11s/it]
+11/02/2021 04:46:41 - INFO - __main__ -   Writing predictions to: out/onehop/dev_i_1_predictions.json
+11/02/2021 04:46:41 - INFO - __main__ -   Writing nbest to: out/onehop/dev_i_1_nbest_predictions.json
+11/02/2021 04:46:43 - INFO - __main__ -   Final F1 score: 39.179%
+# Answering to the second sub-question
+python3 main.py --do_predict --output_dir out/onehop \
+                --predict_file data/decomposed/dev_i.2.json \
+                --init_checkpoint model/onehop/model1.pt,model/onehop/model2.pt,model/onehop/model3.pt \
+                --prefix dev_i_2_ --n_best_size 4
+11/02/2021 04:46:48 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+11/02/2021 04:46:48 - INFO - __main__ -   Output directory () already exists and is not empty.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/02/2021 04:46:48 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+Load data/decomposed/dev_i.2.json, have 7405 data
+100%|██████████████████████████████████████████████████| 7405/7405 [00:17<00:00, 419.55it/s]
+[Parallel(n_jobs=10)]: Using backend LokyBackend with 10 concurrent workers.
+[Parallel(n_jobs=10)]: Done  21 tasks      | elapsed:    3.8s
+[Parallel(n_jobs=10)]: Done 142 tasks      | elapsed:   21.2s
+[Parallel(n_jobs=10)]: Done 345 tasks      | elapsed:   50.8s
+[Parallel(n_jobs=10)]: Done 628 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=10)]: Done 993 tasks      | elapsed:  2.4min
+[Parallel(n_jobs=10)]: Done 1438 tasks      | elapsed:  3.5min
+[Parallel(n_jobs=10)]: Done 1965 tasks      | elapsed:  4.8min
+[Parallel(n_jobs=10)]: Done 2572 tasks      | elapsed:  6.2min
+[Parallel(n_jobs=10)]: Done 3261 tasks      | elapsed:  7.9min
+[Parallel(n_jobs=10)]: Done 4030 tasks      | elapsed:  9.7min
+[Parallel(n_jobs=10)]: Done 4881 tasks      | elapsed: 11.8min
+[Parallel(n_jobs=10)]: Done 5812 tasks      | elapsed: 14.1min
+[Parallel(n_jobs=10)]: Done 6825 tasks      | elapsed: 16.6min
+[Parallel(n_jobs=10)]: Done 7405 out of 7405 | elapsed: 18.0min finished
+11/02/2021 05:05:03 - INFO - __main__ -   ***** Running evaluation *****
+11/02/2021 05:05:03 - INFO - __main__ -     Num orig examples = 7405
+11/02/2021 05:05:03 - INFO - __main__ -     Num split examples = 76873
+11/02/2021 05:05:03 - INFO - __main__ -     Batch size = 256
+Loading from model/onehop/model1.pt
+Loading from model/onehop/model2.pt
+Loading from model/onehop/model3.pt
+Evaluating: 100%|█████████████████████████████████████████| 301/301 [29:41<00:00,  5.92s/it]
+Evaluating: 100%|█████████████████████████████████████████| 301/301 [29:53<00:00,  5.96s/it]
+Evaluating: 100%|█████████████████████████████████████████| 301/301 [31:25<00:00,  6.26s/it]
+11/02/2021 06:36:45 - INFO - __main__ -   Writing predictions to: out/onehop/dev_i_2_predictions.json
+11/02/2021 06:36:45 - INFO - __main__ -   Writing nbest to: out/onehop/dev_i_2_nbest_predictions.json
+11/02/2021 06:36:48 - INFO - __main__ -   Final F1 score: 44.064%
+# Saving the answer through intersection
+python3 run_decomposition.py --task aggregate-intersec --data_type dev_i --topk 10
+# Answering to the original question
+python3 main.py --do_predict --output_dir out/onehop \
+                --predict_file data/hotpot-all/dev.json \
+                --init_checkpoint model/hotpot/model.pt --max_seq_length 300 --prefix dev_ --n_best_size 4
+11/02/2021 06:36:56 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+11/02/2021 06:36:56 - INFO - __main__ -   Output directory () already exists and is not empty.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/02/2021 06:36:56 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+Load data/hotpot-all/dev.json, have 7405 data
+100%|██████████████████████████████████████████████████| 7405/7405 [00:17<00:00, 420.38it/s]
+[Parallel(n_jobs=10)]: Using backend LokyBackend with 10 concurrent workers.
+[Parallel(n_jobs=10)]: Done  21 tasks      | elapsed:    3.8s
+[Parallel(n_jobs=10)]: Done 142 tasks      | elapsed:   21.2s
+[Parallel(n_jobs=10)]: Done 345 tasks      | elapsed:   50.7s
+[Parallel(n_jobs=10)]: Done 628 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=10)]: Done 993 tasks      | elapsed:  2.4min
+[Parallel(n_jobs=10)]: Done 1438 tasks      | elapsed:  3.5min
+[Parallel(n_jobs=10)]: Done 1965 tasks      | elapsed:  4.7min
+[Parallel(n_jobs=10)]: Done 2572 tasks      | elapsed:  6.2min
+[Parallel(n_jobs=10)]: Done 3261 tasks      | elapsed:  7.9min
+[Parallel(n_jobs=10)]: Done 4030 tasks      | elapsed:  9.7min
+[Parallel(n_jobs=10)]: Done 4881 tasks      | elapsed: 11.8min
+[Parallel(n_jobs=10)]: Done 5812 tasks      | elapsed: 14.0min
+[Parallel(n_jobs=10)]: Done 6825 tasks      | elapsed: 16.5min
+[Parallel(n_jobs=10)]: Done 7405 out of 7405 | elapsed: 17.9min finished
+11/02/2021 06:55:09 - INFO - __main__ -   ***** Running evaluation *****
+11/02/2021 06:55:09 - INFO - __main__ -     Num orig examples = 7405
+11/02/2021 06:55:09 - INFO - __main__ -     Num split examples = 77232
+11/02/2021 06:55:09 - INFO - __main__ -     Batch size = 256
+Loading from model/hotpot/model.pt
+Evaluating: 100%|█████████████████████████████████████████| 302/302 [30:28<00:00,  6.06s/it]
+11/02/2021 07:26:08 - INFO - __main__ -   Writing predictions to: out/onehop/dev_predictions.json
+11/02/2021 07:26:08 - INFO - __main__ -   Writing nbest to: out/onehop/dev_nbest_predictions.json
+11/02/2021 07:26:09 - INFO - __main__ -   Final F1 score: 67.078%
+# Saving the answer through original
+python3 run_decomposition.py --task onehop --data_type dev --topk 10
+# Running the decomposition scorer
+python3 main.py --do_predict --output_dir out/scorer --model classifier \
+                --predict_file data/hotpot-all/dev.json,comparison,bridge,intersec,onehop \
+                --init_checkpoint model/scorer/best-model.pt \
+                --max_seq_length 400 --prefix dev_
+11/02/2021 07:26:16 - INFO - __main__ -   device cuda n_gpu 1 distributed training False
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+11/02/2021 07:26:16 - WARNING - tensorflow -   From /home/ubuntu/yongyiw/nlp-group/DecompRC/DecompRC/tokenization.py:74: The name tf.gfile.GFile is deprecated. Please use tf.io.gfile.GFile instead.
+
+1540 out of 7405 are comparison
+Loading dev comparison
+Loading dev bridge
+Loading dev intersec
+Loading dev onehop
+7405 orig data, 7405 predictions
+[Parallel(n_jobs=10)]: Using backend LokyBackend with 10 concurrent workers.
+[Parallel(n_jobs=10)]: Done  21 tasks      | elapsed:    3.6s
+[Parallel(n_jobs=10)]: Done 142 tasks      | elapsed:   21.0s
+[Parallel(n_jobs=10)]: Done 345 tasks      | elapsed:   50.2s
+[Parallel(n_jobs=10)]: Done 628 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=10)]: Done 993 tasks      | elapsed:  2.4min
+[Parallel(n_jobs=10)]: Done 1438 tasks      | elapsed:  3.5min
+[Parallel(n_jobs=10)]: Done 1965 tasks      | elapsed:  4.7min
+[Parallel(n_jobs=10)]: Done 2572 tasks      | elapsed:  6.2min
+[Parallel(n_jobs=10)]: Done 3261 tasks      | elapsed:  7.9min
+[Parallel(n_jobs=10)]: Done 4030 tasks      | elapsed:  9.7min
+[Parallel(n_jobs=10)]: Done 4881 tasks      | elapsed: 11.8min
+[Parallel(n_jobs=10)]: Done 5812 tasks      | elapsed: 14.0min
+[Parallel(n_jobs=10)]: Done 6825 tasks      | elapsed: 16.4min
+[Parallel(n_jobs=10)]: Done 7918 tasks      | elapsed: 19.1min
+[Parallel(n_jobs=10)]: Done 9093 tasks      | elapsed: 21.9min
+[Parallel(n_jobs=10)]: Done 10348 tasks      | elapsed: 24.9min
+[Parallel(n_jobs=10)]: Done 11685 tasks      | elapsed: 28.2min
+[Parallel(n_jobs=10)]: Done 13102 tasks      | elapsed: 31.6min
+[Parallel(n_jobs=10)]: Done 14601 tasks      | elapsed: 35.2min
+[Parallel(n_jobs=10)]: Done 16180 tasks      | elapsed: 39.0min
+[Parallel(n_jobs=10)]: Done 17841 tasks      | elapsed: 43.0min
+[Parallel(n_jobs=10)]: Done 19212 out of 19212 | elapsed: 46.3min finished
+11/02/2021 08:12:42 - INFO - __main__ -   ***** Running evaluation *****
+11/02/2021 08:12:42 - INFO - __main__ -     Num orig examples = 19212
+11/02/2021 08:12:42 - INFO - __main__ -     Num split examples = 20079
+11/02/2021 08:12:42 - INFO - __main__ -     Batch size = 256
+Loading from model/scorer/best-model.pt
+Evaluating: 100%|███████████████████████████████████████████| 79/79 [11:36<00:00,  8.82s/it]
+11/02/2021 08:24:23 - INFO - __main__ -   Save score file into: out/scorer/dev_class_scores.json
+11/02/2021 08:24:23 - INFO - __main__ -   Final F1 score: 70.088%

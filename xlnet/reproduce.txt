@@ -1,0 +1,233 @@
+INFO:tensorflow:Create CheckpointSaverHook.
+INFO:tensorflow:Graph was finalized.
+2021-11-03 00:47:13.764718: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1512] Adding visible gpu devices: 0, 1, 2, 3
+2021-11-03 00:47:13.764793: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-11-03 00:47:13.764801: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990]      0 1 2 3 
+2021-11-03 00:47:13.764808: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 0:   N N N N 
+2021-11-03 00:47:13.764814: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 1:   N N N N 
+2021-11-03 00:47:13.764819: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 2:   N N N N 
+2021-11-03 00:47:13.764825: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 3:   N N N N 
+2021-11-03 00:47:13.764984: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14257 MB memory) -> physical GPU (device: 0, name: Tesla T4, pci bus id: 0000:00:1b.0, compute capability: 7.5)
+2021-11-03 00:47:13.765153: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 14257 MB memory) -> physical GPU (device: 1, name: Tesla T4, pci bus id: 0000:00:1c.0, compute capability: 7.5)
+2021-11-03 00:47:13.765371: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:2 with 14257 MB memory) -> physical GPU (device: 2, name: Tesla T4, pci bus id: 0000:00:1d.0, compute capability: 7.5)
+2021-11-03 00:47:13.765591: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:3 with 14257 MB memory) -> physical GPU (device: 3, name: Tesla T4, pci bus id: 0000:00:1e.0, compute capability: 7.5)
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Saving checkpoints for 0 into exp/sts-b/model.ckpt.
+INFO:tensorflow:exp/sts-b/model.ckpt-0 is not in all_model_checkpoint_paths. Manually adding it.
+INFO:tensorflow:Initialize strategy
+2021-11-03 00:50:14.315947: I tensorflow/stream_executor/dso_loader.cc:152] successfully opened CUDA library libcublas.so.10.0 locally
+INFO:tensorflow:loss = 12.144487, step = 0
+INFO:tensorflow:global_step/sec: 0.546695
+INFO:tensorflow:loss = 2.3815656, step = 100 (182.918 sec)
+INFO:tensorflow:global_step/sec: 0.818698
+INFO:tensorflow:loss = 0.4394377, step = 200 (122.145 sec)
+INFO:tensorflow:global_step/sec: 0.818177
+INFO:tensorflow:loss = 0.6471473, step = 300 (122.223 sec)
+INFO:tensorflow:global_step/sec: 0.818052
+INFO:tensorflow:loss = 0.28351974, step = 400 (122.242 sec)
+INFO:tensorflow:global_step/sec: 0.818024
+INFO:tensorflow:loss = 0.19814537, step = 500 (122.246 sec)
+INFO:tensorflow:Saving checkpoints for 600 into exp/sts-b/model.ckpt.
+INFO:tensorflow:exp/sts-b/model.ckpt-600 is not in all_model_checkpoint_paths. Manually adding it.
+INFO:tensorflow:global_step/sec: 0.750695
+INFO:tensorflow:loss = 0.24206705, step = 600 (133.210 sec)
+INFO:tensorflow:global_step/sec: 0.81855
+INFO:tensorflow:loss = 0.15705466, step = 700 (122.167 sec)
+INFO:tensorflow:global_step/sec: 0.818233
+INFO:tensorflow:loss = 0.186513, step = 800 (122.215 sec)
+INFO:tensorflow:global_step/sec: 0.818115
+INFO:tensorflow:loss = 0.113709986, step = 900 (122.232 sec)
+INFO:tensorflow:global_step/sec: 0.818053
+INFO:tensorflow:loss = 0.099698, step = 1000 (122.241 sec)
+INFO:tensorflow:global_step/sec: 0.81801
+INFO:tensorflow:loss = 0.18138188, step = 1100 (122.248 sec)
+INFO:tensorflow:Saving checkpoints for 1200 into exp/sts-b/model.ckpt.
+INFO:tensorflow:exp/sts-b/model.ckpt-1200 is not in all_model_checkpoint_paths. Manually adding it.
+INFO:tensorflow:Finalize strategy.
+INFO:tensorflow:Loss for final step: 0.08380976.
+/home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:526: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:527: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:528: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:529: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:530: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:535: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+INFO:tensorflow:Single device mode.
+
+WARNING: The TensorFlow contrib module will not be included in TensorFlow 2.0.
+For more information, please see:
+  * https://github.com/tensorflow/community/blob/master/rfcs/20180907-contrib-sunset.md
+  * https://github.com/tensorflow/addons
+If you depend on functionality not listed there, please file an issue.
+
+INFO:tensorflow:Using config: {'_model_dir': 'exp/sts-b', '_tf_random_seed': None, '_save_summary_steps': 100, '_save_checkpoints_steps': None, '_save_checkpoints_secs': None, '_session_config': allow_soft_placement: true
+, '_keep_checkpoint_max': 0, '_keep_checkpoint_every_n_hours': 10000, '_log_step_count_steps': 100, '_train_distribute': None, '_device_fn': None, '_protocol': None, '_eval_distribute': None, '_experimental_distribute': None, '_service': None, '_cluster_spec': <tensorflow.python.training.server_lib.ClusterSpec object at 0x7fab4b11a910>, '_task_type': 'worker', '_task_id': 0, '_global_id_in_cluster': 0, '_master': '', '_evaluation_master': '', '_is_chief': True, '_num_ps_replicas': 0, '_num_worker_replicas': 1, '_tpu_config': TPUConfig(iterations_per_loop=1000, num_shards=1, num_cores_per_replica=None, per_host_input_for_training=3, tpu_job_name=None, initial_infeed_sleep_secs=None, input_partition_dims=None), '_cluster': None}
+WARNING:tensorflow:Estimator's model_fn (<function get_model_fn.<locals>.model_fn at 0x7fab4b11cb00>) includes params argument, but params are not passed to Estimator.
+INFO:tensorflow:Num of eval samples: 1500
+INFO:tensorflow:Create new tfrecord proc_data/sts-b/spiece.model.len-128.dev.eval.tf_record.
+INFO:tensorflow:Writing example 0 of 1504
+INFO:tensorflow:*** Example ***
+INFO:tensorflow:guid: dev-1
+INFO:tensorflow:input_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 79 326 33 24 500 6692 27 7649 9 4 79 326 3107 24 500 6692 27 7649 9 4 3
+INFO:tensorflow:input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+INFO:tensorflow:segment_ids: 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 2
+INFO:tensorflow:label: 5.0 (id = 5.0)
+INFO:tensorflow:*** Example ***
+INFO:tensorflow:guid: dev-2
+INFO:tensorflow:input_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 79 673 863 27 5962 24 2958 9 4 79 863 27 5962 24 2958 9 4 3
+INFO:tensorflow:input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+INFO:tensorflow:segment_ids: 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 2
+INFO:tensorflow:label: 4.75 (id = 4.75)
+INFO:tensorflow:*** Example ***
+INFO:tensorflow:guid: dev-3
+INFO:tensorflow:input_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 79 326 27 8667 24 8233 22 24 12708 9 4 32 326 27 8667 24 8233 22 18 12708 9 4 3
+INFO:tensorflow:input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+INFO:tensorflow:segment_ids: 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 2
+INFO:tensorflow:label: 5.0 (id = 5.0)
+INFO:tensorflow:*** Example ***
+INFO:tensorflow:guid: dev-4
+INFO:tensorflow:input_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 79 813 27 945 18 4420 9 4 79 326 27 945 4420 9 4 3
+INFO:tensorflow:input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+INFO:tensorflow:segment_ids: 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 2
+INFO:tensorflow:label: 2.4 (id = 2.4)
+INFO:tensorflow:*** Example ***
+INFO:tensorflow:guid: dev-5
+INFO:tensorflow:input_ids: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 79 813 27 945 18 21327 9 4 79 326 27 945 24 21327 9 4 3
+INFO:tensorflow:input_mask: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+INFO:tensorflow:segment_ids: 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 2
+INFO:tensorflow:label: 2.75 (id = 2.75)
+INFO:tensorflow:Input tfrecord file proc_data/sts-b/spiece.model.len-128.dev.eval.tf_record
+INFO:tensorflow:Add exp/sts-b/model.ckpt-1200 to eval list.
+INFO:tensorflow:Add exp/sts-b/model.ckpt-0 to eval list.
+INFO:tensorflow:Add exp/sts-b/model.ckpt-600 to eval list.
+WARNING:tensorflow:From /home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/framework/op_def_library.py:263: colocate_with (from tensorflow.python.framework.ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Colocations handled automatically by placer.
+WARNING:tensorflow:From run_classifier.py:504: map_and_batch (from tensorflow.contrib.data.python.ops.batching) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.data.experimental.map_and_batch(...)`.
+INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:memory input None
+INFO:tensorflow:Use float type <dtype: 'float32'>
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/xlnet/modeling.py:535: dropout (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dropout instead.
+WARNING:tensorflow:From /home/ubuntu/yongyiw/nlp-group/xlnet/modeling.py:67: dense (from tensorflow.python.layers.core) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use keras.layers.dense instead.
+INFO:tensorflow:#params: 361318401
+WARNING:tensorflow:From /home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/ops/metrics_impl.py:363: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.cast instead.
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Starting evaluation at 2021-11-03T01:16:18Z
+INFO:tensorflow:Graph was finalized.
+2021-11-03 01:16:19.427258: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 AVX512F FMA
+2021-11-03 01:16:19.453201: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2499995000 Hz
+2021-11-03 01:16:19.456002: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x55641c75eb10 executing computations on platform Host. Devices:
+2021-11-03 01:16:19.456023: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): <undefined>, <undefined>
+2021-11-03 01:16:19.632221: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:998] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2021-11-03 01:16:19.633097: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1433] Found device 0 with properties: 
+name: Tesla T4 major: 7 minor: 5 memoryClockRate(GHz): 1.59
+pciBusID: 0000:00:1b.0
+totalMemory: 14.75GiB freeMemory: 14.66GiB
+2021-11-03 01:16:19.633115: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1512] Adding visible gpu devices: 0
+2021-11-03 01:16:19.634081: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-11-03 01:16:19.634092: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990]      0 
+2021-11-03 01:16:19.634100: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 0:   N 
+2021-11-03 01:16:19.634168: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14257 MB memory) -> physical GPU (device: 0, name: Tesla T4, pci bus id: 0000:00:1b.0, compute capability: 7.5)
+2021-11-03 01:16:19.635725: I tensorflow/compiler/xla/service/service.cc:150] XLA service 0x55641c4e0740 executing computations on platform CUDA. Devices:
+2021-11-03 01:16:19.635745: I tensorflow/compiler/xla/service/service.cc:158]   StreamExecutor device (0): Tesla T4, Compute Capability 7.5
+WARNING:tensorflow:From /home/ubuntu/miniconda3/envs/xlnet/lib/python3.7/site-packages/tensorflow/python/training/saver.py:1266: checkpoint_exists (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to check for files with this prefix.
+INFO:tensorflow:Restoring parameters from exp/sts-b/model.ckpt-0
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+2021-11-03 01:16:26.837226: I tensorflow/stream_executor/dso_loader.cc:152] successfully opened CUDA library libcublas.so.10.0 locally
+INFO:tensorflow:Evaluation [18/188]
+INFO:tensorflow:Evaluation [36/188]
+INFO:tensorflow:Evaluation [54/188]
+INFO:tensorflow:Evaluation [72/188]
+INFO:tensorflow:Evaluation [90/188]
+INFO:tensorflow:Evaluation [108/188]
+INFO:tensorflow:Evaluation [126/188]
+INFO:tensorflow:Evaluation [144/188]
+INFO:tensorflow:Evaluation [162/188]
+INFO:tensorflow:Evaluation [180/188]
+INFO:tensorflow:Evaluation [188/188]
+INFO:tensorflow:Finished evaluation at 2021-11-03-01:17:18
+INFO:tensorflow:Saving dict for global step 0: eval_loss = 9.022538, eval_pearsonr = -0.094294615, global_step = 0, loss = 8.998555
+INFO:tensorflow:Saving 'checkpoint_path' summary for global step 0: exp/sts-b/model.ckpt-0
+INFO:tensorflow:================================================================================
+INFO:tensorflow:Eval result | eval_loss 9.022538185119629 | eval_pearsonr -0.09429461508989334 | global_step 0 | loss 8.998555183410645 | path exp/sts-b/model.ckpt-0 | step 0 | 
+INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:memory input None
+INFO:tensorflow:Use float type <dtype: 'float32'>
+INFO:tensorflow:#params: 361318401
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Starting evaluation at 2021-11-03T01:17:23Z
+INFO:tensorflow:Graph was finalized.
+2021-11-03 01:17:24.552279: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1512] Adding visible gpu devices: 0
+2021-11-03 01:17:24.552315: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-11-03 01:17:24.552322: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990]      0 
+2021-11-03 01:17:24.552328: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 0:   N 
+2021-11-03 01:17:24.552407: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14257 MB memory) -> physical GPU (device: 0, name: Tesla T4, pci bus id: 0000:00:1b.0, compute capability: 7.5)
+INFO:tensorflow:Restoring parameters from exp/sts-b/model.ckpt-600
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Evaluation [18/188]
+INFO:tensorflow:Evaluation [36/188]
+INFO:tensorflow:Evaluation [54/188]
+INFO:tensorflow:Evaluation [72/188]
+INFO:tensorflow:Evaluation [90/188]
+INFO:tensorflow:Evaluation [108/188]
+INFO:tensorflow:Evaluation [126/188]
+INFO:tensorflow:Evaluation [144/188]
+INFO:tensorflow:Evaluation [162/188]
+INFO:tensorflow:Evaluation [180/188]
+INFO:tensorflow:Evaluation [188/188]
+INFO:tensorflow:Finished evaluation at 2021-11-03-01:18:21
+INFO:tensorflow:Saving dict for global step 600: eval_loss = 0.45227104, eval_pearsonr = 0.90477425, global_step = 600, loss = 0.47399557
+INFO:tensorflow:Saving 'checkpoint_path' summary for global step 600: exp/sts-b/model.ckpt-600
+INFO:tensorflow:================================================================================
+INFO:tensorflow:Eval result | eval_loss 0.452271044254303 | eval_pearsonr 0.9047742486000061 | global_step 600 | loss 0.473995566368103 | path exp/sts-b/model.ckpt-600 | step 600 | 
+INFO:tensorflow:Calling model_fn.
+INFO:tensorflow:memory input None
+INFO:tensorflow:Use float type <dtype: 'float32'>
+INFO:tensorflow:#params: 361318401
+INFO:tensorflow:Done calling model_fn.
+INFO:tensorflow:Starting evaluation at 2021-11-03T01:18:26Z
+INFO:tensorflow:Graph was finalized.
+2021-11-03 01:18:27.399844: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1512] Adding visible gpu devices: 0
+2021-11-03 01:18:27.399899: I tensorflow/core/common_runtime/gpu/gpu_device.cc:984] Device interconnect StreamExecutor with strength 1 edge matrix:
+2021-11-03 01:18:27.399906: I tensorflow/core/common_runtime/gpu/gpu_device.cc:990]      0 
+2021-11-03 01:18:27.399914: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1003] 0:   N 
+2021-11-03 01:18:27.399982: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 14257 MB memory) -> physical GPU (device: 0, name: Tesla T4, pci bus id: 0000:00:1b.0, compute capability: 7.5)
+INFO:tensorflow:Restoring parameters from exp/sts-b/model.ckpt-1200
+INFO:tensorflow:Running local_init_op.
+INFO:tensorflow:Done running local_init_op.
+INFO:tensorflow:Evaluation [18/188]
+INFO:tensorflow:Evaluation [36/188]
+INFO:tensorflow:Evaluation [54/188]
+INFO:tensorflow:Evaluation [72/188]
+INFO:tensorflow:Evaluation [90/188]
+INFO:tensorflow:Evaluation [108/188]
+INFO:tensorflow:Evaluation [126/188]
+INFO:tensorflow:Evaluation [144/188]
+INFO:tensorflow:Evaluation [162/188]
+INFO:tensorflow:Evaluation [180/188]
+INFO:tensorflow:Evaluation [188/188]
+INFO:tensorflow:Finished evaluation at 2021-11-03-01:19:24
+INFO:tensorflow:Saving dict for global step 1200: eval_loss = 0.36420918, eval_pearsonr = 0.91819584, global_step = 1200, loss = 0.38363987
+INFO:tensorflow:Saving 'checkpoint_path' summary for global step 1200: exp/sts-b/model.ckpt-1200
+INFO:tensorflow:================================================================================
+INFO:tensorflow:Eval result | eval_loss 0.3642091751098633 | eval_pearsonr 0.9181958436965942 | global_step 1200 | loss 0.3836398720741272 | path exp/sts-b/model.ckpt-1200 | step 1200 | 
+INFO:tensorflow:================================================================================
+INFO:tensorflow:Best result | eval_loss 0.3642091751098633 | eval_pearsonr 0.9181958436965942 | global_step 1200 | loss 0.3836398720741272 | path exp/sts-b/model.ckpt-1200 | step 1200 | 

@@ -8,7 +8,7 @@ conda activate xlnet
 
 # reproduce SST-B finetuning
 cd $MAIN_DIR
-python run_classifier.py \
+CUDA_VISIBLE_DEVICES=0,1,2,3 python run_classifier.py \
     --do_train=True \
     --do_eval=False \
     --task_name=sts-b \
@@ -22,7 +22,7 @@ python run_classifier.py \
     --max_seq_length=128 \
     --train_batch_size=8 \
     --num_hosts=1 \
-    --num_core_per_host=1 \
+    --num_core_per_host=4 \
     --learning_rate=5e-5 \
     --train_steps=1200 \
     --warmup_steps=120 \
@@ -31,7 +31,7 @@ python run_classifier.py \
 
 # evaluate finetuning results
 cd $MAIN_DIR
-python run_classifier.py \
+CUDA_VISIBLE_DEVICES=0 python run_classifier.py \
     --do_train=False \
     --do_eval=True \
     --task_name=sts-b \
