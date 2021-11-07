@@ -8,11 +8,14 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
+DATASETS = ['isear', 'emosti', 'emoint']
+
+
 def parser(): 
     parser = argparse.ArgumentParser('Convert unify-emotion-datasets to desired format')
     parser.add_argument('data_dir', help='Directory of unify-emotion-datasets')
     parser.add_argument('output_dir', help='Directory to write output files')
-    parser.add_argument('--datasets', nargs='+', default=['emosti', 'emoint'], help='Datasets to convert')
+    parser.add_argument('--datasets', nargs='+', default=DATASETS, help='Datasets to convert')
     parser.add_argument('--sub_train_sizes', nargs='*', default=[100, 200, 500, 1000], help='Use smaller sets of training samples')
     parser.add_argument('--r_train', default=0.8, help='Training sample ratio')
     parser.add_argument('--r_dev', default=0.1, help='Development sample ratio')
@@ -20,6 +23,7 @@ def parser():
     parser.add_argument('--seed', default=0, help='Random seed')
     args = parser.parse_args()
     assert args.r_train + args.r_dev + args.r_test == 1, 'Invalid split ratio'
+    assert len(set(args.datasets) - set(DATASETS)) == 0, 'Some dataset is invalid'
     return args
 
 
@@ -55,6 +59,25 @@ def save_files(args, dataset, file_dict):
     print('n_trian_examples: {}\tn_dev_examples: {}\tn_test_examples: {}'.format(len(train), len(dev), len(test)))
 
 
+def prepare_isear(args): 
+    emo2label = OrderedDict({
+        'anger': 0, 
+        'disgust': 1, 
+        'fear': 2, 
+        'guilt': 3, 
+        'joy': 4, 
+        'sadness': 5, 
+        'shame': 6
+    })
+    df = pd.read_csv(
+        os.path.join(args.data_dir, 'isear/isear.csv'), sep='|', usecols=['Field1', 'SIT']
+    )
+    df = df.rename({'Field1': 'emotion', 'SIT': 'text'}, axis=1)
+    df['labels'] = df['emotion'].apply(lambda x: emo2label[x])
+    emotions = list(df['emotion'].unique())
+    save_files(args, 'isear', {'emotions': emotions, 'data': df})
+
+
 def prepare_emosti(args): 
     tag2label = OrderedDict({
         '<anger>': 0, 
@@ -70,7 +93,6 @@ def prepare_emosti(args):
         '<cause>', 
         '<\\cause>'
     ]
-
     res = []
     for dataset in ['Emotion Cause.txt', 'No Cause.txt']: 
         with open(os.path.join(args.data_dir, 'emosti/{}'.format(dataset))) as f: 
@@ -92,34 +114,30 @@ def prepare_emosti(args):
             L[i] = (text, y)
         res += L
     df = pd.DataFrame(res, columns=['text', 'labels'])
-
     emotions = list(map(lambda key: key[1:-1], tag2label.keys()))
-
     save_files(args, 'emosti', {'emotions': emotions, 'data': df})
     
 
 def prepare_emoint(args): 
-    df = pd.read_csv(os.path.join(args.data_dir, 'emoint/emoint_all'), sep='\t', header=None)
-
     emo2label = OrderedDict({
         'anger': 0, 
         'joy': 1, 
         'sadness': 2, 
         'fear': 3
     })
-
+    df = pd.read_csv(os.path.join(args.data_dir, 'emoint/emoint_all'), sep='\t', header=None)
     df = pd.DataFrame(
         df.apply(lambda row: (row[1], emo2label[row[2]]), axis=1).values.tolist(), 
         columns=['text', 'labels']
     )
     emotions = list(emo2label.keys())
-
     save_files(args, 'emoint', {'emotions': emotions, 'data': df})
 
 
 def main(): 
     args = parser()
     processor_mapping = {
+        'isear': prepare_isear, # ISEAR
         'emosti': prepare_emosti, # Emotion-Stimulus
         'emoint': prepare_emoint # EmoInt
     }

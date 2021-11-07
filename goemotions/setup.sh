@@ -9,9 +9,12 @@ conda activate goemo
 
 # download pretrained BERT-Base, cased
 cd ${main_dir}/bert/
-wget https://storage.googleapis.com/bert_models/2018_10_18/cased_L-12_H-768_A-12.zip
-unzip cased_L-12_H-768_A-12.zip
-rm cased_L-12_H-768_A-12.zip
+if [[ ! -d cased_L-12_H-768_A-12 ]]
+then
+    wget https://storage.googleapis.com/bert_models/2018_10_18/cased_L-12_H-768_A-12.zip
+    unzip cased_L-12_H-768_A-12.zip
+    rm cased_L-12_H-768_A-12.zip
+fi
 
 
 # prepare sentiment-grouped dataset and Ekman's taxonomy dataset
@@ -36,11 +39,13 @@ git clone https://github.com/sarnthil/unify-emotion-datasets.git
 cd unify-emotion-datasets
 python download_datasets.py --yes
 cd ${main_dir}/data
-# prepare EmoInt dataset
-mv unify-emotion-datasets/datasets/emoint/ .
+# prepare ISEAR dataset
+mv unify-emotion-datasets/datasets/isear/ .
 # prepare Emotion-Stimulus dataset
 mv unify-emotion-datasets/datasets/emotion-cause/ emosti
 mv emosti/Dataset/* emosti/
+# prepare EmoInt dataset
+mv unify-emotion-datasets/datasets/emoint/ .
 cd $main_dir
 python prepare_transfer_datasets.py data/ data/
-rm -rf unify-emotion-datasets/
+rm -rf ${main_dir}/data/unify-emotion-datasets

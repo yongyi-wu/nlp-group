@@ -3,6 +3,10 @@
 main_dir=$(pwd)
 all_out_dir=${main_dir}/out
 mkdir -p $all_out_dir
+result_dir=${main_dir}/results
+mkdir -p $result_dir
+
+ckpt_saving_steps=6000
 
 # activate environment
 source $(conda info --base)/etc/profile.d/conda.sh
@@ -30,7 +34,7 @@ do
         --multilabel \
         --output_dir $out_dir \
         --init_checkpoint goemotions/bert/cased_L-12_H-768_A-12/bert_model.ckpt \
-        --save_checkpoints_steps 5000
+        --save_checkpoints_steps $ckpt_saving_steps
 
     # evaluate performance
     cd $main_dir
@@ -41,12 +45,12 @@ do
         --emotion_file ${data_dir}/emotions.txt \
         --noadd_neutral
 
-    cp ${out_dir}/results.json ${all_out_dir}/${dataset}_results.json
+    cp ${out_dir}/results.json ${result_dir}/${dataset}.json
 done
 
 
 # SECTION VI
-for dataset in emosti emoint
+for dataset in isear emosti emoint
 do
     data_dir=${main_dir}/data/${dataset}
     for trainsize in 100 200 500 1000 max
@@ -65,7 +69,6 @@ do
                     unset freeze
                 fi
             fi
-
             out_dir=${all_out_dir}/${dataset}_${trainsize}_${setup}
 
             # transfer learning
@@ -77,6 +80,7 @@ do
                 --vocab_file goemotions/bert/cased_L-12_H-768_A-12/vocab.txt \
                 --output_dir $out_dir \
                 --init_checkpoint $checkpoint \
+                --save_checkpoints_steps $ckpt_saving_steps \
                 --train_fname train_${trainsize}.tsv \
                 --learning_rate 2e-5 \
                 --num_train_epochs 3.0 \
@@ -92,7 +96,7 @@ do
                 --emotion_file ${data_dir}/emotions.txt \
                 --noadd_neutral
 
-            cp ${out_dir}/results.json ${all_out_dir}/${dataset}_${trainsize}_${setup}_results.json
+            cp ${out_dir}/results.json ${result_dir}/${dataset}_${trainsize}_${setup}.json
         done
     done
 done
