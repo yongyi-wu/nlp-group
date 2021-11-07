@@ -1,6 +1,12 @@
 # Self-defined
+temp.ipynb
 __MACOSX
-data/
+DecompRC/data/
+xlnet/data/
+goemotions/data/*/
+goemotions/*_out/
+goemotions/bert/cased_L-12_H-768_A-12
+model_checkpoints/
 model/
 out/
 exp/
