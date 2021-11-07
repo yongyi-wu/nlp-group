@@ -63,7 +63,7 @@ flags.DEFINE_float("threshold", 0.3, "Threshold for binarizing predictions.")
 def main(_):
   preds = pd.read_csv(FLAGS.predictions, sep="\t")
   true = pd.read_csv(
-      FLAGS.test_data, sep="\t", header=None, names=["text", "labels", "id"])
+      FLAGS.test_data, sep="\t", header=None, usecols=[0, 1], names=["text", "labels"], dtype=str)
   emotions = open(FLAGS.emotion_file).read().splitlines()
   if FLAGS.add_neutral:
     emotions.append("neutral")

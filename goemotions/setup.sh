@@ -30,3 +30,17 @@ do
             --output_data ${data_dir}/${datatype}.tsv
     done
 done
+
+cd ${main_dir}/data
+git clone https://github.com/sarnthil/unify-emotion-datasets.git
+cd unify-emotion-datasets
+python download_datasets.py --yes
+cd ${main_dir}/data
+# prepare EmoInt dataset
+mv unify-emotion-datasets/datasets/emoint/ .
+# prepare Emotion-Stimulus dataset
+mv unify-emotion-datasets/datasets/emotion-cause/ emosti
+mv emosti/Dataset/* emosti/
+cd $main_dir
+python prepare_transfer_datasets.py data/ data/
+rm -rf unify-emotion-datasets/
