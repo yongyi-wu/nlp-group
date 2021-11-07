@@ -107,7 +107,7 @@ def main(_):
       if t in v:
         found = True
         break
-    if not found:
+    if not found and t not in not_found:
       print("%s is not found" % t)
       not_found.append(t)
 

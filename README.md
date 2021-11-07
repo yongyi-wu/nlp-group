@@ -7,7 +7,22 @@
 * Ethan Wu (yongyiw)
 
 
-## Semantic Textual Similarity
+## Fine-Grained Emotions
+
+### Usage
+
+```bash
+cd goemotions
+./setup.sh
+./reproduce.sh
+```
+
+### Related Work
+
+[GoEmotions: A Dataset of Fine-Grained Emotions](https://arxiv.org/abs/2005.00547)
+
+
+## ~~Semantic Textual Similarity~~
 
 Semantic Textual Similarity measures the degree to which two sentences are semantically equivalent. Although published in 2019, XLNet remains as a [champion](https://paperswithcode.com/sota/semantic-textual-similarity-on-senteval) on the Semantic Textual Similarity Benchmark (STS-B), a task from the well-known GLUE benchmark. 
 
