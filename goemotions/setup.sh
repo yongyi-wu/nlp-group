@@ -43,5 +43,5 @@ git clone https://github.com/sarnthil/unify-emotion-datasets.git
 cd unify-emotion-datasets
 python download_datasets.py --yes
 cd $main_dir
-python prepare_transfer_datasets.py data/unify-emotion-datasets/datasets data/
+python prepare_section6_datasets.py data/unify-emotion-datasets/datasets data/
 rm -rf data/unify-emotion-datasets

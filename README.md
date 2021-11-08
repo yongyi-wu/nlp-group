@@ -9,9 +9,17 @@
 
 ## Fine-Grained Emotions
 
-So far, `GoEmotions` is the largest manually anotated dataset for fine-grained emotion classification. We successfully reproduced the results of finetuning the baseline model `Cased BERT-Base` on multilable classification tasks (Section 5), each of which is based on GoEmotions taxonomy, sentiment-grouped data or Ekman's taxonomy. 
+So far, `GoEmotions` is the largest manually anotated dataset for fine-grained emotion classification. We successfully reproduced the results (see below) of finetuning the baseline model `Cased BERT-Base` on multilable classification tasks (Section 5), each of which is based on GoEmotions taxonomy, sentiment-grouped data or Ekman's taxonomy. 
 
-Moreover, the dataset shows great generalizability to other domains, as illustrated in 9 transfer learning tasks (Section 6 and Appendix H). Within the margin of error, results on `DailyDialog`, `Emotion-Stimulus`, `Affective Text`, `CrowdFlower`, `ElectoralTweets`, `ISEAR`, `TEC`, `EmoInt` and `SSEC` have been reproduced. 
+|| Macro-averaged Precision (std*) | Macro-averaged Recall (std*) | Macro-averaged F1 (std*) | 
+--- | --- | --- | --- 
+GoEmotions Taxonomy | 0.49 (0.18) | 0.51 (0.24) | 0.49 (0.19)
+Sentiment-grouped Data | 0.64 (0.09) | 0.72 (0.10) | 0.68 (0.09)
+Ekman's Taxonomy | 0.58 (0.10) | 0.66 (0.11) | 0.62 (0.10)
+
+> *: The std used here are reported in the original paper. 
+
+Moreover, this dataset shows great generalizability to other domains, as illustrated in 9 transfer learning tasks (Section 6 and Appendix H). Unfortunately, the authors did not give details nor code on data preprocessing and performance evaluation, so our re-implementation may not capture every nuance. Despite such ambiguities, our reproduced results on these datasets do reflect the overall trend as observed in the paper. 
 
 The summary statistics for reproduced experiments are available at `goemotions/results` as individual json files. 
 

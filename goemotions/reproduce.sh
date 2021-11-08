@@ -108,8 +108,11 @@ do
 
             cp ${out_dir}/results.json ${result_dir}/${trainsize}_${setup}.json
 
-            # save space by deleting first checkpoint
-            rm ${out_dir}/model.ckpt-0.*
+            # save space by deleting all checkpoints
+            rm ${out_dir}/model.ckpt*
         done
     done
 done
+# plot results
+cd $main_dir
+python plot_section6_results.py $all_result_dir $all_result_dir
