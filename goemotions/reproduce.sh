@@ -3,9 +3,8 @@
 main_dir=$(pwd)
 all_out_dir=${main_dir}/out
 mkdir -p $all_out_dir
-result_dir=${main_dir}/results
-mkdir -p $result_dir
-
+all_result_dir=${main_dir}/results
+mkdir -p $all_result_dir
 ckpt_saving_steps=6000
 
 # activate environment
@@ -13,7 +12,7 @@ source $(conda info --base)/etc/profile.d/conda.sh
 conda activate goemo
 
 
-# SECTION V
+# REPRODUCING SECTION V
 for dataset in goemo sentiment ekman
 do
     if [[ $dataset == "goemo" ]]
@@ -45,14 +44,24 @@ do
         --emotion_file ${data_dir}/emotions.txt \
         --noadd_neutral
 
-    cp ${out_dir}/results.json ${result_dir}/${dataset}.json
+    cp ${out_dir}/results.json ${all_result_dir}/${dataset}.json
 done
 
 
-# SECTION VI
-for dataset in isear emosti emoint
+# REPRODUCING SECTION VI
+for dataset in dialog stimulus affective crowd elect isear tec emoint ssec
 do
+    case $dataset in
+        dialog | affective | ssec )
+            multi=true
+            ;;
+        * )
+            unset multi
+            ;;
+    esac
     data_dir=${main_dir}/data/${dataset}
+    result_dir=${all_result_dir}/${dataset}
+    mkdir -p $result_dir
     for trainsize in 100 200 500 1000 max
     do
         for setup in baseline freeze nofreeze
@@ -69,7 +78,7 @@ do
                     unset freeze
                 fi
             fi
-            out_dir=${all_out_dir}/${dataset}_${trainsize}_${setup}
+            out_dir=${all_out_dir}/${dataset}/${trainsize}_${setup}
 
             # transfer learning
             cd ${main_dir}/..
@@ -78,6 +87,7 @@ do
                 --data_dir $data_dir \
                 --bert_config_file goemotions/bert/cased_L-12_H-768_A-12/bert_config.json \
                 --vocab_file goemotions/bert/cased_L-12_H-768_A-12/vocab.txt \
+                ${multi:+--multilabel} \
                 --output_dir $out_dir \
                 --init_checkpoint $checkpoint \
                 --save_checkpoints_steps $ckpt_saving_steps \
@@ -96,7 +106,10 @@ do
                 --emotion_file ${data_dir}/emotions.txt \
                 --noadd_neutral
 
-            cp ${out_dir}/results.json ${result_dir}/${dataset}_${trainsize}_${setup}.json
+            cp ${out_dir}/results.json ${result_dir}/${trainsize}_${setup}.json
+
+            # save space by deleting first checkpoint
+            rm ${out_dir}/model.ckpt-0.*
         done
     done
 done

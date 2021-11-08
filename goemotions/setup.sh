@@ -24,28 +24,24 @@ do
     data_dir=${main_dir}/data/${dataset}
     mkdir -p $data_dir
     # group labels based on specified mapping
-    for datatype in train dev test
+    for split in train dev test
     do
-        python replace_emotions.py \
-            --input data/${datatype}.tsv \
-            --mapping_dict data/${dataset}_mapping.json \
-            --output_emotion_file ${data_dir}/emotions.txt \
-            --output_data ${data_dir}/${datatype}.tsv
+        if [[ ! -f ${data_dir}/${split}.tsv ]]
+        then
+            python replace_emotions.py \
+                --input data/${split}.tsv \
+                --mapping_dict data/${dataset}_mapping.json \
+                --output_emotion_file ${data_dir}/emotions.txt \
+                --output_data ${data_dir}/${split}.tsv
+        fi
     done
 done
 
+# prepare datasets for evaluating transfer learning
 cd ${main_dir}/data
 git clone https://github.com/sarnthil/unify-emotion-datasets.git
 cd unify-emotion-datasets
 python download_datasets.py --yes
-cd ${main_dir}/data
-# prepare ISEAR dataset
-mv unify-emotion-datasets/datasets/isear/ .
-# prepare Emotion-Stimulus dataset
-mv unify-emotion-datasets/datasets/emotion-cause/ emosti
-mv emosti/Dataset/* emosti/
-# prepare EmoInt dataset
-mv unify-emotion-datasets/datasets/emoint/ .
 cd $main_dir
-python prepare_transfer_datasets.py data/ data/
-rm -rf ${main_dir}/data/unify-emotion-datasets
+python prepare_transfer_datasets.py data/unify-emotion-datasets/datasets data/
+rm -rf data/unify-emotion-datasets

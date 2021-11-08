@@ -9,13 +9,11 @@
 
 ## Fine-Grained Emotions
 
-So far, `GoEmotions` is the largest manually anotated dataset for fine-grained emotion classification. We successfully reproduced the full results of finetuning the baseline model `Cased BERT-Base` on multilable classification tasks (Section 5), each of which is based on GoEmotions taxonomy, sentiment-grouped data or Ekman's taxonomy. 
+So far, `GoEmotions` is the largest manually anotated dataset for fine-grained emotion classification. We successfully reproduced the results of finetuning the baseline model `Cased BERT-Base` on multilable classification tasks (Section 5), each of which is based on GoEmotions taxonomy, sentiment-grouped data or Ekman's taxonomy. 
 
-Moreover, `GoEmotions` generalizes well to other domains, as demonstrated by 3* representative transfer learning tasks (Section 6). Within the margin of error, results on `ISEAR`, `EmoInt` and `Emotion-Stimulus` datasets have been reproduced as well. 
+Moreover, the dataset shows great generalizability to other domains, as illustrated in 9 transfer learning tasks (Section 6 and Appendix H). Within the margin of error, results on `DailyDialog`, `Emotion-Stimulus`, `Affective Text`, `CrowdFlower`, `ElectoralTweets`, `ISEAR`, `TEC`, `EmoInt` and `SSEC` have been reproduced. 
 
 The summary statistics for reproduced experiments are available at `goemotions/results` as individual json files. 
-
-> *: The author conducted nine transfer learning tasks in total (Appendix H), but no code has been provided. We made significant efforts on converting data format and adjusting classification code. On the other hand, as noted by author, the chosen datasets in Section 6 already represent some degree of domain diversity. 
 
 ### Usage
 
@@ -25,7 +23,7 @@ cd goemotions
 ./reproduce.sh
 ```
 
-> Note: The reproduction can be completed on a single 16GB GPU. Altogether with transfer learning tasks, the experiment will take about 4 hours. 
+> Note: The reproduction can be completed on a single 16GB GPU in 7 hours. Due to time and computation constraints, however, the script does not perform 10 different random splits as the authors have done. 
 
 ### Related Work
 
