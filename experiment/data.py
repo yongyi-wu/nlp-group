@@ -60,12 +60,10 @@ class GoEmotionsDataset(Dataset):
             input_mask = [1] * len(input_ids)
             seg_ids = [0] * len(tokens)
             # create multi-hot label encoding
-            if 'labels' in row.name: 
-                labels = [0] * n_labels
-                for label in str(row['labels'].split(',')): 
+            labels = [0] * n_labels
+            if 'labels' in row.index: 
+                for label in str(row['labels']).split(','): 
                     labels[int(label)] = 1
-            else: 
-                labels = None
             # pad to max_len
             while len(input_ids) < max_len: 
                 input_ids.append(0)
@@ -76,7 +74,7 @@ class GoEmotionsDataset(Dataset):
                 'input_ids': np.array(input_ids, dtype=int), 
                 'input_mask': np.array(input_mask, dtype=int), 
                 'seg_ids': np.array(seg_ids, dtype=int), 
-                'labels': np.array(labels, dtype=int) if labels is not None else None
+                'labels': np.array(labels, dtype=int)
             })
         return data
 

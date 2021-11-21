@@ -11,6 +11,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard.writer import SummaryWriter
 from transformers import BertTokenizer
+import pandas as pd
 
 from data import GoEmotionsDataset
 from models import BaselineModel, BaselineEstimator
@@ -25,7 +26,7 @@ def parse():
     run = parser.add_argument_group(title='Run', description='Parameters related to running the script')
     run.add_argument('--max_len', type=int, default=30, help='Maximum sequence length to the Transformers')
     run.add_argument('--checkpoint', type=str, help='Path to a saved checkpoint')
-    run.add_argument('--no_train', action='store_false', help='Skip the training phase')
+    run.add_argument('--no_train', action='store_true', help='Skip the training phase')
     run.add_argument('--eval_file', type=str, default='test.tsv', choices=['dev.tsv', 'test.tsv'], help='Dataset to evaluate')
     run.add_argument('--seed', type=int, default=0, help='Random seed for reproduction')
     train = parser.add_argument_group(title='Training', description='Parameters related to training the model')
@@ -33,7 +34,9 @@ def parse():
     train.add_argument('--lr', type=float, default=5E-5, help='Initial learning rate')
     train.add_argument('--n_epochs', type=int, default=4, help='Number of training epochs')
     train.add_argument('--warmup_proportion', type=float, default=0.1, help='Proportion of training steps to do linear lr warmup')
+    train.add_argument('--pred_thold', type=float, default=0.3, help='Threshold for predicting each emotion')
     cfg = parser.parse_args()
+    cfg.output_dir = os.path.join(cfg.output_dir, cfg.exp_name)
     return cfg
 
 
@@ -42,8 +45,9 @@ def main():
     seed_everything(cfg.seed)
     make_if_not_exists(cfg.output_dir)
     logger = config_logging(cfg.output_dir)
+    time = datetime.now().strftime('%m-%d_%H-%M')
     writer = SummaryWriter(
-        os.path.join(cfg.output_dir, datetime.now().strftime('%m-%d_%H-%M'))
+        os.path.join(cfg.output_dir, time)
     )
     logger.info(json.dumps(vars(cfg)))
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -60,7 +64,6 @@ def main():
             cfg.max_len
         )
         trainloader = DataLoader(trainset, batch_size=cfg.batch_size, shuffle=True, num_workers=4, drop_last=True)
-        n_train_steps = cfg.n_epochs * len(trainloader)
         devset = GoEmotionsDataset(
             os.path.join(cfg.data_dir, 'dev.tsv'), 
             tokenizer, 
@@ -73,7 +76,8 @@ def main():
             os.path.join(cfg.data_dir, cfg.eval_file), 
             tokenizer, 
             len(emotions), 
-            cfg.max_len
+            cfg.max_len, 
+            is_test=True
         )
         evalloader = DataLoader(evalset, batch_size=cfg.batch_size, num_workers=4)
 
@@ -88,18 +92,22 @@ def main():
             no_decay_name in param_name for no_decay_name in ['LayerNorm', 'layer_norm', 'bias']
         )
         optimizer = optim.AdamW(
-            {param_name: param for param_name, param in model.parameters() if not no_weight_decay(param)}, 
-            {param_name: param for param_name, param in model.parameters() if no_weight_decay(param)} + {'weight_decay': 0}, 
+            [
+                {'params': [param for param_name, param in model.named_parameters() if not no_weight_decay(param_name)]}, 
+                {'params': [param for param_name, param in model.named_parameters() if no_weight_decay(param_name)], 'weight_decay': 0}
+            ], 
             lr=cfg.lr, 
             betas=(0.9, 0.999), 
             eps=1E-6, 
             weight_decay=0.01
         )
+        train_steps = cfg.n_epochs * len(trainloader)
+        warmup_steps = cfg.warmup_proportion * train_steps
         scheduler = optim.lr_scheduler.LambdaLR(
             optimizer, 
-            lambda global_step: min(
-                cfg.lr * global_step / (cfg.warmup_proportion * n_train_steps), 
-                cfg.lr * (1 - global_step / n_train_steps)
+            lambda global_step: max(
+                0, 
+                min(global_step / warmup_steps, 1 - (global_step - warmup_steps) / train_steps)
             ) # slanted triangular lr
         )
     estimator = BaselineEstimator(
@@ -109,27 +117,21 @@ def main():
         scheduler=scheduler, 
         logger=logger, 
         writer=writer, 
+        pred_thold=cfg.pred_thold, 
         device=device
     )
 
     print('Running the model')
-    if not cfg.no_trian: 
+    if not cfg.no_train: 
         logger.info('Training...')
         estimator.train(cfg, trainloader, devloader)
     if cfg.eval_file is not None: 
         logger.info('Evaluating {}...'.format(cfg.eval_file))
-        yhats, _ = estimator.test(evalloader)
-        assert yhats.shape[0] == len(evalset) and yhats.shape[1] == len(emotions)
-        prediction_file = '{}_{}_prediction.csv'.format(cfg.exp_name, cfg.eval_file)
-        with open(os.path.join(cfg.output_dir, prediction_file), 'w') as f: 
-            f.write('\t'.join(emotions) + '\n')
-            f.writelines(
-                np.apply_along_axis(
-                    lambda row: '\t'.join(row.astype(str).tolist()) + '\n', 
-                    1, 
-                    yhats.asypte(str)
-                ).tolist()
-            )
+        probs, _ = estimator.test(evalloader)
+        assert probs.shape[0] == len(evalset) and probs.shape[1] == len(emotions)
+        prediction_file = '{}_{}_prediction.tsv'.format(time, cfg.eval_file)
+        df = pd.DataFrame(probs, columns=emotions)
+        df.to_csv(os.path.join(cfg.output_dir, prediction_file), sep='\t', index=False)
         logger.info('Writing prediction of {} to {}'.format(cfg.eval_file, prediction_file))
 
 
