@@ -10,7 +10,6 @@ from tqdm import tqdm
 import numpy as np
 import torch
 from torch import nn
-from torch.utils.tensorboard.writer import SummaryWriter
 from sklearn.metrics import roc_auc_score
 
 
@@ -28,7 +27,7 @@ def make_if_not_exists(new_dir):
 def config_logging(log_dir): 
     make_if_not_exists(log_dir)
     file_handler = logging.FileHandler(
-        filename=os.path.join(log_dir, 'train.log')
+        filename=os.path.join(log_dir, 'goemotions.log')
     )
     stdout_handler = logging.StreamHandler(sys.stdout)
     logging.basicConfig(
@@ -53,11 +52,22 @@ def convert_to_unicode(text):
 
 class BaseEstimator(object): 
     """A wrapper class to perform training, evluation or testing while accumulating and logging results"""
-    def __init__(self, model, criterion, optim=None, scheduler=None, device='cpu'): 
+    def __init__(
+        self, 
+        model, 
+        criterion, 
+        optim=None, 
+        scheduler=None, 
+        logger=None, 
+        writer=None, 
+        device='cpu'
+    ): 
         self.model = model
         self.criterion = criterion
         self.optim = optim
         self.scheduler = scheduler
+        self.logger = logger
+        self.writer = writer
         self.device = device
 
         self.epochs = 0
@@ -94,8 +104,9 @@ class BaseEstimator(object):
             loss, yhat, y = self.step(data, self.optim, self.scheduler)
             self.train_step += 1
             tbar.set_description('train_loss - {:.4f}'.format(loss))
-            self.writer.add_scalar('train/loss', loss, self.train_step)
-            self.writer.add_scalar('train/auc', roc_auc_score(y, yhat), self.train_step)
+            if self.writer is not None: 
+                self.writer.add_scalar('train/loss', loss, self.train_step)
+                self.writer.add_scalar('train/auc', roc_auc_score(y, yhat), self.train_step)
         if evalloader is not None: 
             return self.eval(evalloader)
         else: 
@@ -105,19 +116,14 @@ class BaseEstimator(object):
         assert self.optim is not None, 'Optimizer is required'
         assert hasattr(cfg, 'output_dir'), 'Output directory must be specified'
         make_if_not_exists(cfg.output_dir)
-        self.logger = config_logging(cfg.output_dir)
-        self.writer = SummaryWriter(
-            os.path.join(cfg.output_dir, datetime.now().strftime('%m-%d_%H-%M'))
-        )
-        self.logger.info(cfg)
         for _ in range(cfg.epochs): 
             loss, auc = self._train_epoch(trainloader, evalloader)
             self.epochs += 1
-            self.logger.info('[EPOCH {}]\tval_loss - {:.4f} val_auc - {:.4f}'.format(self.epochs, loss, auc))
             checkpoint_path = os.path.join(cfg.output_dir, '{}.pt'.format(datetime.now().strftime('%m-%d_%H-%M')))
             self.save(checkpoint_path)
-            self.logger.info('[CHECKPOINT] {}'.format(checkpoint_path))
-        self.writer.close()
+            if self.logger is not None: 
+                self.logger.info('[EPOCH {}]\tdev_loss - {:.4f} dev_auc - {:.4f}'.format(self.epochs, loss, auc))
+                self.logger.info('[CHECKPOINT] {}'.format(checkpoint_path))
 
     def eval(self, evalloader, phase='eval'): 
         self.eval_step += 1
@@ -130,14 +136,16 @@ class BaseEstimator(object):
             loss, out, y = self.step(data)
             tbar.set_description('{}_loss - {:.4f}'.format(phase, loss))
             val_loss.append(loss)
-            ys.extend(y)
-            yhats.extend(out)
+            ys.append(y)
+            yhats.append(out)
+        ys = np.concatenate(ys, dim=0)
+        yhats = np.concatenate(yhats, dim=0)
         loss = np.mean(val_loss).item()
         auc = roc_auc_score(ys, yhats)
-        if self.log_dir is not None: 
+        if self.writer is not None: 
             self.writer.add_scalar('{}/loss'.format(phase), loss, self.eval_step)
             self.writer.add_scalar('{}/auc'.format(phase), auc, self.eval_step)
-        return loss, auc
+        return yhats, ys
 
     def test(self, testloader): 
         self.eval_step = 0
