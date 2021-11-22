@@ -5,7 +5,6 @@ import json
 import argparse
 from datetime import datetime
 
-import numpy as np
 import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
@@ -27,7 +26,7 @@ def parse():
     run.add_argument('--max_len', type=int, default=30, help='Maximum sequence length to the Transformers')
     run.add_argument('--checkpoint', type=str, help='Path to a saved checkpoint')
     run.add_argument('--no_train', action='store_true', help='Skip the training phase')
-    run.add_argument('--eval_file', type=str, default='test.tsv', choices=['dev.tsv', 'test.tsv'], help='Dataset to evaluate')
+    run.add_argument('--test_file', type=str, default='test.tsv', choices=['dev.tsv', 'test.tsv'], help='Dataset to evaluate')
     run.add_argument('--seed', type=int, default=0, help='Random seed for reproduction')
     train = parser.add_argument_group(title='Training', description='Parameters related to training the model')
     train.add_argument('--batch_size', type=int, default=16, help='Batch size for training')
@@ -71,18 +70,18 @@ def main():
             cfg.max_len
         )
         devloader = DataLoader(devset, batch_size=cfg.batch_size, num_workers=4)
-    if cfg.eval_file is not None: 
-        evalset = GoEmotionsDataset(
-            os.path.join(cfg.data_dir, cfg.eval_file), 
+    if cfg.test_file is not None: 
+        testset = GoEmotionsDataset(
+            os.path.join(cfg.data_dir, cfg.test_file), 
             tokenizer, 
             len(emotions), 
             cfg.max_len, 
             is_test=True
         )
-        evalloader = DataLoader(evalset, batch_size=cfg.batch_size, num_workers=4)
+        testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
 
     print('Preparing the model...')
-    model = BaselineModel(len(emotions)).to(device)
+    model = BaselineModel(len(emotions)).to(device) # TODO: change to your model!
     criterion = nn.BCEWithLogitsLoss().to(device)
     if cfg.no_train: 
         optimizer = None
@@ -110,29 +109,31 @@ def main():
                 min(global_step / warmup_steps, 1 - (global_step - warmup_steps) / train_steps)
             ) # slanted triangular lr
         )
-    estimator = BaselineEstimator(
+    estimator = BaselineEstimator( # TODO: change to your estimator!
         model, 
+        tokenizer, 
         criterion, 
-        optim=optimizer, 
+        optimizer=optimizer, 
         scheduler=scheduler, 
         logger=logger, 
         writer=writer, 
         pred_thold=cfg.pred_thold, 
-        device=device
+        device=device, 
+        # add other hyperparameters here
     )
 
-    print('Running the model')
+    print('Running the model...')
     if not cfg.no_train: 
         logger.info('Training...')
         estimator.train(cfg, trainloader, devloader)
-    if cfg.eval_file is not None: 
-        logger.info('Evaluating {}...'.format(cfg.eval_file))
-        probs, _ = estimator.test(evalloader)
-        assert probs.shape[0] == len(evalset) and probs.shape[1] == len(emotions)
-        prediction_file = '{}_{}_prediction.tsv'.format(time, cfg.eval_file)
+    if cfg.test_file is not None: 
+        logger.info('Testing {}...'.format(cfg.test_file))
+        probs, _ = estimator.test(testloader)
+        assert probs.shape[0] == len(testset) and probs.shape[1] == len(emotions)
+        prediction_file = '{}_{}_prediction.tsv'.format(time, cfg.test_file.split('.')[0])
         df = pd.DataFrame(probs, columns=emotions)
         df.to_csv(os.path.join(cfg.output_dir, prediction_file), sep='\t', index=False)
-        logger.info('Writing prediction of {} to {}'.format(cfg.eval_file, prediction_file))
+        logger.info('Writing prediction of {} to {}'.format(cfg.test_file, prediction_file))
 
 
 if __name__ == '__main__': 

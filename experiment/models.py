@@ -19,32 +19,30 @@ class BaselineModel(BaseClassifier):
 
 
 class BaselineEstimator(BaseEstimator): 
-    def step(self, data, optim=None, scheduler=None): 
-        if data['labels'].sum() == 0: 
-            # perform inference, no label is provided
-            logits = self.model(
-                data['input_ids'].to(self.device, dtype=torch.long), 
-                data['input_mask'].to(self.device, dtype=torch.long), 
-                data['seg_ids'].to(self.device, dtype=torch.long)
-            )
-            return -1, torch.sigmoid(logits).detach().cpu().numpy(), None
-        else: 
-            if optim is not None: 
-                optim.zero_grad()
-            logits = self.model(
-                data['input_ids'].to(self.device, dtype=torch.long), 
-                data['input_mask'].to(self.device, dtype=torch.long), 
-                data['seg_ids'].to(self.device, dtype=torch.long)
-            )
+    def step(self, data): 
+        logits = self.model(
+            data['input_ids'].to(self.device, dtype=torch.long), 
+            data['input_mask'].to(self.device, dtype=torch.long), 
+            data['seg_ids'].to(self.device, dtype=torch.long)
+        )
+        if self.mode in {'train', 'dev'}: 
+            # training or developmenting, ground true labels are provided
+            if self.mode == 'train': 
+                self.optimizer.zero_grad()
             loss = self.criterion(logits, data['labels'].to(self.device, dtype=torch.float))
-            if optim is not None: 
+            if self.mode == 'train': 
                 loss.backward()
                 nn.utils.clip_grad_norm_(self.model.parameters(), 1) # TODO: not equivalent to tf.clip_by_global_norm
-                optim.step()
-                assert scheduler is not None, 'Scheduler is required'
-                scheduler.step()
+                self.optimizer.step()
+                if self.scheduler is not None: 
+                    self.scheduler.step()
             return (
                 loss.detach().cpu().item(), 
                 torch.sigmoid(logits).detach().cpu().numpy(), 
-                data['labels']
+                data['labels'].numpy()
             )
+        elif self.mode == 'test': 
+            # testing, no ground true label is provided
+            return None, torch.sigmoid(logits).detach().cpu().numpy(), None
+        else: 
+            raise ValueError(self.mode)
