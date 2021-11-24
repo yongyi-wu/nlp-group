@@ -13,7 +13,7 @@ from transformers import BertTokenizer
 import pandas as pd
 
 from data import GoEmotionsDataset
-from models import BaselineModel, BaselineEstimator
+from models import BaselineModel, BaselineEstimator, LabelAwareModel
 from utils import make_if_not_exists, seed_everything, config_logging
 
 
@@ -81,7 +81,9 @@ def main():
         testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
 
     print('Preparing the model...')
-    model = BaselineModel(len(emotions)).to(device) # TODO: change to your model!
+    # model = BaselineModel(len(emotions)).to(device) # TODO: change to your model!
+    label_ids = tokenizer.convert_tokens_to_ids(emotions)
+    model = LabelAwareModel(label_ids).to(device)
     criterion = nn.BCEWithLogitsLoss().to(device)
     if cfg.no_train: 
         optimizer = None
