@@ -13,7 +13,7 @@ class LabelAwareModel(nn.Module):
         self.backbone = BertModel.from_pretrained('bert-base-cased')
         
         label_embds = nn.Parameter(
-            self.backbone.embeddings.word_embeddings.weight[label_ids], 
+            self.backbone.embeddings.word_embeddings.weight[label_ids].clone(), 
             requires_grad=True
         )
         self.register_parameter('label_embds', label_embds)
