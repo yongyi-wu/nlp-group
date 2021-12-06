@@ -98,6 +98,8 @@ class BaselineEstimator(BaseEstimator):
         else: 
             raise ValueError(self.mode)
 
+
+## similar to LAA, just without softmax/normalization. 
 class Naive_Label_Model(BaseClassifier): 
     """BERT baseline as implemented in the GoEmotions paper"""
     def __init__(self, n_labels, label_id, device): 
@@ -174,6 +176,8 @@ class Naive_Label_Estimator(BaseEstimator):
         else: 
             raise ValueError(self.mode)
 
+
+## punishes the variance of the output probabilities. Does not perform well
 class var_loss_Model(BaseClassifier): 
     """BERT baseline as implemented in the GoEmotions paper"""
     def __init__(self, n_labels): 

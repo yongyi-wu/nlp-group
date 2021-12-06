@@ -17,8 +17,6 @@ from models import BaselineModel, BaselineEstimator
 from utils import make_if_not_exists, seed_everything, config_logging
 
 #added 
-from models import Naive_Label_Model, Naive_Label_Estimator
-from models import var_loss_Model, var_loss_Estimator
 from transformers import BertTokenizer, BertModel
 
 from models import LabelAwareModel
@@ -89,43 +87,27 @@ def main():
         testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
     print('Preparing the model...')
 
-    ## Prepare label embedding
+    ## Prepare label ids
     ######################################################################################
-    mod = BertModel.from_pretrained('bert-base-uncased').to(device)
-    mod.eval()
-    n_labels = len(emotions)
-    label_emb = torch.Tensor(n_labels, 768).to(device) ## 768 is the length of embedding vector
-    with torch.no_grad():
-        for i in range(n_labels):
-            lab = emotions[i]
-            lab_tok = tokenizer(lab, return_tensors="pt").to(device)
-            lab_id = lab_tok["input_ids"]
-            lab_seg = lab_tok["token_type_ids"]
-            lab_mask = lab_tok["attention_mask"]
-            outputs = mod(lab_id, lab_seg , lab_mask)
-            last_hidden_states = outputs[0].to(device)
-            lab_emb = last_hidden_states[0][1].to(device)
-            label_emb[i] = lab_emb
-    label_emb.to(device)
-    #label_emb.cuda()
-
     label_ids = tokenizer.convert_tokens_to_ids(emotions)
     label_id = torch.tensor(label_ids).type(torch.long).to(device)
 
-    mod.train()
     ######################################################################################
     #model = Naive_Label_Model(n_labels, label_id, device).to(device) # TODO: change to your model!
     #model = BaselineModel(n_labels).to(device)
     #model = var_loss_Model(n_labels).to(device)
     model = LabelAwareModel(label_ids).to(device)
 
-    ## weighted loss
+    ## weighted loss (CB loss)
     sample_counts = torch.tensor([4130 , 2328 , 1567 , 2470 , 2939 , 1087 , 1368 , 2191 ,  641 , 1269 , 2022 ,
                                   793  , 303 ,  853  , 596 , 2662  ,  77 , 1452 , 2086  , 164 , 1581  , 111 ,
                                   1110 ,  153  , 545 , 1326 , 1060 , 14219 ]).to(device)
     weights = (1-0.95) / (1-0.95 ** sample_counts)
-
+    
     criterion = nn.BCEWithLogitsLoss(weight = weights).to(device)
+
+    ## if you want to use regular CE loss instead of CB loss then do 
+    # criterion = nn.BCEWithLogitsLoss().to(device)
     
     if cfg.no_train: 
         optimizer = None
@@ -153,7 +135,7 @@ def main():
                 min(global_step / warmup_steps, 1 - (global_step - warmup_steps) / train_steps)
             ) # slanted triangular lr
         )
-    estimator = Naive_Label_Estimator( # TODO: change to your estimator!
+    estimator = BaselineEstimator( # TODO: change to your estimator!
         model, 
         tokenizer, 
         criterion, 
