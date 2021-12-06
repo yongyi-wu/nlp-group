@@ -13,8 +13,14 @@ from transformers import BertTokenizer
 import pandas as pd
 
 from data import GoEmotionsDataset
-from models import BaselineModel, BaselineEstimator, LabelAwareModel
+from models import BaselineModel, BaselineEstimator
 from utils import make_if_not_exists, seed_everything, config_logging
+
+#added 
+from transformers import BertTokenizer, BertModel
+
+from models import LabelAwareModel
+
 
 
 def parse(): 
@@ -79,12 +85,30 @@ def main():
             is_test=True
         )
         testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
-
     print('Preparing the model...')
-    # model = BaselineModel(len(emotions)).to(device) # TODO: change to your model!
+
+    ## Prepare label ids
+    ######################################################################################
     label_ids = tokenizer.convert_tokens_to_ids(emotions)
+    label_id = torch.tensor(label_ids).type(torch.long).to(device)
+
+    ######################################################################################
+    #model = Naive_Label_Model(n_labels, label_id, device).to(device) # TODO: change to your model!
+    #model = BaselineModel(n_labels).to(device)
+    #model = var_loss_Model(n_labels).to(device)
     model = LabelAwareModel(label_ids).to(device)
-    criterion = nn.BCEWithLogitsLoss().to(device)
+
+    ## weighted loss (CB loss)
+    sample_counts = torch.tensor([4130 , 2328 , 1567 , 2470 , 2939 , 1087 , 1368 , 2191 ,  641 , 1269 , 2022 ,
+                                  793  , 303 ,  853  , 596 , 2662  ,  77 , 1452 , 2086  , 164 , 1581  , 111 ,
+                                  1110 ,  153  , 545 , 1326 , 1060 , 14219 ]).to(device)
+    weights = (1-0.95) / (1-0.95 ** sample_counts)
+    
+    criterion = nn.BCEWithLogitsLoss(weight = weights).to(device)
+
+    ## if you want to use regular CE loss instead of CB loss then do 
+    # criterion = nn.BCEWithLogitsLoss().to(device)
+    
     if cfg.no_train: 
         optimizer = None
         scheduler = None
@@ -120,7 +144,7 @@ def main():
         logger=logger, 
         writer=writer, 
         pred_thold=cfg.pred_thold, 
-        device=device, 
+        device=device,
         # add other hyperparameters here
     )
 
