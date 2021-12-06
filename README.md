@@ -35,7 +35,9 @@ cd goemotions
 
 ### Improvement
 
-We introduce a label-aware attention mechanism to perform different aggregation of last hidden states with respect to different emotion labels. Our model outperforms the baseline while maintaining simple design ideas and robustness to different initializations. 
+We introduce a label-aware attention mechanism to perform different aggregation of last hidden states with respect to different emotion labels. We use the class-balanced (CB) loss introduced by Cui et al., with hyperparameter beta=0.95
+
+Our model outperforms the baseline while maintaining simple design ideas and robustness to different initializations. 
 
 <center>
     <img src="experiment/arch.png", width=350px>
