@@ -35,9 +35,7 @@ cd goemotions
 
 ### Improvement
 
-We introduce a label-aware attention mechanism to perform different aggregation of last hidden states with respect to different emotion labels. We use the class-balanced (CB) loss introduced by Cui et al., with hyperparameter beta=0.95
-
-Our model outperforms the baseline while maintaining simple design ideas and robustness to different initializations. 
+We introduce a label-aware attention mechanism to perform different aggregation of last hidden states with respect to different emotion labels. We use the class-balanced (CB) loss introduced by Cui et al., with hyperparameter beta=0.95. Our model outperforms the baseline while maintaining simple design ideas and robustness to different initializations. 
 
 <center>
     <img src="experiment/arch.png", width=350px>
@@ -46,7 +44,7 @@ Our model outperforms the baseline while maintaining simple design ideas and rob
 || Macro Precision (std) | Macro Recall (std) | Macro F1 (std) | 
 --- | --- | --- | --- 
 Baseline | 0.40 (0.18) | 0.63 (0.24) | 0.46 (0.19)
-Ours | 0.49 (0.01) | 0.55 (0.01) | 0.51 (0.01)
+Ours | 0.5 (0.02) | 0.56 (0.01) | 0.52 (0.01)
 
 
 To train our proposed model, execute following commands. More details to run experiment and perform analysis can be found in [experiment/README.md](experiment/README.md). 
@@ -64,6 +62,7 @@ python classifier.py <exp_name>
 * [GoEmotions: A Dataset of Fine-Grained Emotions](https://arxiv.org/abs/2005.00547)
 * [An Analysis of Annotated Corpora for Emotion Classification in Text](https://aclanthology.org/C18-1179)
 * [AttentionXML: Label Tree-based Attention-Aware Deep Model for High-Performance Extreme Multi-Label Text Classification](https://arxiv.org/abs/1811.01727)
+* [Class-Balanced Loss Based on Effective Number of Samples](https://arxiv.org/pdf/1901.05555.pdf)
 
 
 
