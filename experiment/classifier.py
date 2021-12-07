@@ -154,10 +154,7 @@ def main():
         logger=logger, 
         writer=writer, 
         pred_thold=cfg.pred_thold, 
-
-        device=device, 
-
-        device=device,
+        device=device
 
         # add other hyperparameters here
     )
