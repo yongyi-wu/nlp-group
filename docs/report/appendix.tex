@@ -1,0 +1,63 @@
+\begin{table}[h]
+    \begin{center}
+    \begin{tabular}{|l|l|l|l|l|}
+        \hline
+        Emotions & Baseline & LAA w/CB Loss & LAA w/CE Loss & LEAM w/CE Loss  \\ % &LEAM w/CE Loss\\
+        \hline
+        Admiration &  0.65 & {0.67} & \textbf{0.68} & {0.67}\\
+        Amusement & 0.80 & \textbf{0.81} & 0.80 & 0.79  \\
+        Anger & 0.47 &\textbf{0.49} & {0.48} & 0.46 \\
+        Annoyance & 0.34 &\textbf{0.37} & {0.36} & 0.33\\
+        Approval & 0.36 & \textbf{0.41} & {0.40} & {0.39} \\
+        Caring & 0.39 & {0.43} &  \textbf{0.44} & {0.43} \\
+        Confusion & 0.37 &\textbf{0.42} & \textbf{0.42} & \textbf{0.42}\\
+        Curiosity & 0.54 & \textbf{0.56} & {0.55} & 0.53\\
+        Desire & {0.49} & {0.49} & 0.48 & \textbf{0.53}\\
+        Disappointment & 0.28 &\textbf{0.33} & \textbf{0.33} & {0.29} \\
+        Disapproval & 0.39 & \textbf{0.41} & \textbf{0.41} & {0.40}\\
+        Disgust & 0.45 & \textbf{0.48} & {0.46} & {0.46}\\
+        Embarrassment & 0.43 &\textbf{0.45} & \textbf{0.45} & {0.44}\\
+        Excitement & 0.34 & {0.41} & {0.41} & \textbf{0.43}\\
+        Fear &  0.60 & {0.67} & \textbf{0.68} & \textbf{0.68} \\
+        Gratitude & 0.86 & {0.90} & {0.90} & \textbf{0.91}\\
+        Grief & 0.00 & \textbf{0.42} & {0.35} & {0.21} \\
+        Joy & 0.51 & \textbf{0.60} & {0.59} & {0.59} \\
+        Love & 0.78 & {0.79} & \textbf{0.80} & {0.79}\\
+        Nervousness & \textbf{0.34} & \textbf{0.34} & \textbf{0.34} & \textbf{0.34} \\
+        Neutral & \textbf{0.68} & 0.67 & 0.66 & 0.65\\
+        Optimism & 0.51 & \textbf{0.56} & {0.55} & {0.54} \\
+        Pride &  0.36 & {0.49} & \textbf{0.50} & {0.45} \\
+        Realization & 0.21 & \textbf{0.26} & {0.25} & {0.23} \\
+        Relief & 0.15 & {0.36} & {0.35} & \textbf{0.38} \\
+        Remorse & 0.66 & \textbf{0.68} & {0.67} & 0.65 \\
+        Sadness & 0.49 & {0.53} & {0.53} & \textbf{0.54} \\
+        Surprise & 0.50 & {0.54} & \textbf{0.55} & {0.52}\\
+        \hline
+        Macro Avg. & 0.46 &\textbf{0.52} & {0.51} & {0.50} \\
+        \hline
+        Std & 0.19 & 0.01  & 0.01 & 0.01 \\ % &\textbf{0.005} \\
+        \hline
+    \end{tabular}
+    \end{center}
+    \caption{F1 scores across all emotions in GoEmotions dataset, in comparison with baseline. Column three to 5 are respectively F1 scores for Label-Aware Attention (LAA) with class-balanced (CB) loss; LAA with cross entropy (CE) loss; LEAM with CE loss. } % ; and LEAM model with cross entropy loss.}
+    \label{tab:full}
+\end{table}
+
+\begin{table}[h!]
+\caption{Top 7 common error for the baseline model}
+\centering
+\begin{tabular}{l  l  l }
+\hline\hline
+True Label& Predicted Label & Occurrence  \\ [0.5ex]
+\hline 
+neutral  & approval  & 89\\
+neutral  & disapproval  & 72\\
+neutral  & curiosity  & 68\\
+approval  & neutral  & 67\\
+neutral  & annoyance  & 61\\
+disapproval  & neutral  & 56\\
+annoyance  & neutral  & 55\\[1ex]
+\hline 
+\end{tabular}
+\label{table:baseE} 
+\end{table}
