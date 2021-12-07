@@ -9,19 +9,15 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard.writer import SummaryWriter
-from transformers import BertTokenizer
+
+from transformers import BertModel, BertTokenizer
 import pandas as pd
 
 from data import GoEmotionsDataset
-from models import BaselineModel, BaselineEstimator
+from models import BaselineModel, BaselineEstimator, LeamBERTModel, LabelAwareModel
 from utils import make_if_not_exists, seed_everything, config_logging
 
 #added 
-from transformers import BertTokenizer, BertModel
-
-from models import LabelAwareModel
-
-
 
 def parse(): 
     parser = argparse.ArgumentParser('GoEmotions multi-label classifier')
@@ -40,6 +36,9 @@ def parse():
     train.add_argument('--n_epochs', type=int, default=4, help='Number of training epochs')
     train.add_argument('--warmup_proportion', type=float, default=0.1, help='Proportion of training steps to do linear lr warmup')
     train.add_argument('--pred_thold', type=float, default=0.3, help='Threshold for predicting each emotion')
+
+    train.add_argument('--LEAM_RADIUS', type=int, default=2, help='LEAM attention radius')
+
     cfg = parser.parse_args()
     cfg.output_dir = os.path.join(cfg.output_dir, cfg.exp_name)
     return cfg
@@ -85,6 +84,16 @@ def main():
             is_test=True
         )
         testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
+
+
+    # print('Preparing the model...')
+    # # prepare label semantic embedding
+
+    # bert_model = BertModel.from_pretrained('bert-base-cased')
+    # model = LeamBERTModel(bert_model, tokenizer, emotions, cfg.LEAM_RADIUS).to(device)
+    # # model = BaselineModel(bert_model, head_model, len(emotions)).to(device) # TODO: change to your model!
+    # criterion = nn.BCEWithLogitsLoss().to(device)
+
     print('Preparing the model...')
 
     ## Prepare label ids
@@ -109,6 +118,7 @@ def main():
     ## if you want to use regular CE loss instead of CB loss then do 
     # criterion = nn.BCEWithLogitsLoss().to(device)
     
+
     if cfg.no_train: 
         optimizer = None
         scheduler = None
@@ -144,7 +154,8 @@ def main():
         logger=logger, 
         writer=writer, 
         pred_thold=cfg.pred_thold, 
-        device=device,
+        device=device
+
         # add other hyperparameters here
     )
 
