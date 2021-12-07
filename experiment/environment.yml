@@ -30,6 +30,10 @@ dependencies:
   - coverage=5.5=py36h27cfd23_2
   - cryptography=3.4.7=py36hd23ed53_0
   - cudatoolkit=11.3.1=h2bc3f7f_2
+<<<<<<< HEAD
+=======
+  - cycler=0.11.0=pyhd3eb1b0_0
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
   - cython=0.29.24=py36h295c915_0
   - dataclasses=0.8=pyh4f3eec9_6
   - dbus=1.13.18=hb2f20db_0
@@ -70,6 +74,10 @@ dependencies:
   - jupyter_core=4.8.1=py36h06a4308_0
   - jupyterlab_pygments=0.1.2=py_0
   - jupyterlab_widgets=1.0.0=pyhd3eb1b0_1
+<<<<<<< HEAD
+=======
+  - kiwisolver=1.3.1=py36h2531618_0
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
   - lame=3.100=h7b6447c_0
   - lcms2=2.12=h3be6417_0
   - ld_impl_linux-64=2.35.1=h7274673_9
@@ -93,6 +101,11 @@ dependencies:
   - lz4-c=1.9.3=h295c915_1
   - markdown=3.3.4=py36h06a4308_0
   - markupsafe=2.0.1=py36h27cfd23_0
+<<<<<<< HEAD
+=======
+  - matplotlib=3.3.4=py36h06a4308_0
+  - matplotlib-base=3.3.4=py36h62a2d02_0
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
   - mistune=0.8.4=py36h7b6447c_0
   - mkl=2020.2=256
   - mkl-service=2.3.0=py36he8ac12f_0

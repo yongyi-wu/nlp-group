@@ -9,6 +9,7 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard.writer import SummaryWriter
+<<<<<<< HEAD
 from transformers import BertModel, BertTokenizer
 import pandas as pd
 
@@ -16,6 +17,21 @@ from data import GoEmotionsDataset
 from models import BaselineModel, BaselineEstimator, LeamBERTModel
 from utils import make_if_not_exists, seed_everything, config_logging
 
+=======
+from transformers import BertTokenizer
+import pandas as pd
+
+from data import GoEmotionsDataset
+from models import BaselineModel, BaselineEstimator
+from utils import make_if_not_exists, seed_everything, config_logging
+
+#added 
+from transformers import BertTokenizer, BertModel
+
+from models import LabelAwareModel
+
+
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
 
 def parse(): 
     parser = argparse.ArgumentParser('GoEmotions multi-label classifier')
@@ -34,12 +50,16 @@ def parse():
     train.add_argument('--n_epochs', type=int, default=4, help='Number of training epochs')
     train.add_argument('--warmup_proportion', type=float, default=0.1, help='Proportion of training steps to do linear lr warmup')
     train.add_argument('--pred_thold', type=float, default=0.3, help='Threshold for predicting each emotion')
+<<<<<<< HEAD
     train.add_argument('--LEAM_RADIUS', type=int, default=2, help='LEAM attention radius')
+=======
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
     cfg = parser.parse_args()
     cfg.output_dir = os.path.join(cfg.output_dir, cfg.exp_name)
     return cfg
 
 
+<<<<<<< HEAD
 # def emotion_label_embeddings(emotions, bert_model, tokenizer, non_trainable=False):
 #     label_ids = tokenizer.convert_tokens_to_ids(emotions)
 #     label_embed = bert_model.embeddings.word_embeddings.weight[label_ids]
@@ -91,6 +111,8 @@ def parse():
 
 
 
+=======
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
 def main(): 
     cfg = parse()
     seed_everything(cfg.seed)
@@ -131,6 +153,7 @@ def main():
             is_test=True
         )
         testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
+<<<<<<< HEAD
 
     print('Preparing the model...')
     # prepare label semantic embedding
@@ -139,6 +162,32 @@ def main():
     model = LeamBERTModel(bert_model, tokenizer, emotions, cfg.LEAM_RADIUS).to(device)
     # model = BaselineModel(bert_model, head_model, len(emotions)).to(device) # TODO: change to your model!
     criterion = nn.BCEWithLogitsLoss().to(device)
+=======
+    print('Preparing the model...')
+
+    ## Prepare label ids
+    ######################################################################################
+    label_ids = tokenizer.convert_tokens_to_ids(emotions)
+    label_id = torch.tensor(label_ids).type(torch.long).to(device)
+
+    ######################################################################################
+    #model = Naive_Label_Model(n_labels, label_id, device).to(device) # TODO: change to your model!
+    #model = BaselineModel(n_labels).to(device)
+    #model = var_loss_Model(n_labels).to(device)
+    model = LabelAwareModel(label_ids).to(device)
+
+    ## weighted loss (CB loss)
+    sample_counts = torch.tensor([4130 , 2328 , 1567 , 2470 , 2939 , 1087 , 1368 , 2191 ,  641 , 1269 , 2022 ,
+                                  793  , 303 ,  853  , 596 , 2662  ,  77 , 1452 , 2086  , 164 , 1581  , 111 ,
+                                  1110 ,  153  , 545 , 1326 , 1060 , 14219 ]).to(device)
+    weights = (1-0.95) / (1-0.95 ** sample_counts)
+    
+    criterion = nn.BCEWithLogitsLoss(weight = weights).to(device)
+
+    ## if you want to use regular CE loss instead of CB loss then do 
+    # criterion = nn.BCEWithLogitsLoss().to(device)
+    
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
     if cfg.no_train: 
         optimizer = None
         scheduler = None
@@ -174,7 +223,11 @@ def main():
         logger=logger, 
         writer=writer, 
         pred_thold=cfg.pred_thold, 
+<<<<<<< HEAD
         device=device, 
+=======
+        device=device,
+>>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
         # add other hyperparameters here
     )
 
