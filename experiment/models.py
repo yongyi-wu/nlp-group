@@ -2,36 +2,10 @@
 
 import torch
 from torch import nn
-<<<<<<< HEAD
-from transformers import BertModel, BertTokenizer
 
+## added
+from transformers import BertTokenizer, BertModel
 from utils import BaseClassifier, BaseEstimator
-
-
-
-# class LeamBERTModel(BaseClassifier):
-#     def __init__(self, bert_model, head_model, n_labels, radius):
-#         super().__init__(
-#             bert_model,
-#             head_model
-#         )
-#         self.n_labels = n_labels
-#         self.dropout_1 = nn.Dropout(p=0.2)
-#         self.radius = radius
-#         # model init
-#         nn.init.trunc_normal_(self.head.weight, std=0.02)
-#         nn.init.zeros_(self.head.bias)
-
-#     def forward(self, input_ids, input_mask, seg_ids): 
-#         encoded = self.backbone(
-#             input_ids=input_ids, 
-#             attention_mask=input_mask, 
-#             token_type_ids=seg_ids, 
-#         )
-#         encoded = encoded[0] # tensor of size bs * (len(input_ids)+2) * 768
-#         encoded = self.droupout_1(encoded)
-#         logits = self.head(encoded, self.label_embed, self.radius)
-#         return logits
 
 def emotion_label_embeddings(emotions, bert_model, tokenizer, non_trainable=False):
     label_ids = tokenizer.convert_tokens_to_ids(emotions)
@@ -108,12 +82,6 @@ class LeamBERTModel(nn.Module):
         
         # final_transform
         return self.linear_layer(z) # bs * n_labels
-=======
-from transformers import BertModel
-
-from utils import BaseClassifier, BaseEstimator
-## added
-from transformers import BertTokenizer, BertModel
 
 
 
@@ -164,7 +132,7 @@ class LabelAwareModel(nn.Module):
         ) # (B, n_labels, 2 * d_model)
         logits = self.head(self.dropout(hidden_states)).squeeze(-1) # (B, n_labels)
         return logits
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
+
 
 class BaselineModel(BaseClassifier): 
     """BERT baseline as implemented in the GoEmotions paper"""
@@ -205,8 +173,6 @@ class BaselineEstimator(BaseEstimator):
             return None, torch.sigmoid(logits).detach().cpu().numpy(), None
         else: 
             raise ValueError(self.mode)
-<<<<<<< HEAD
-=======
 
 
 ## similar to LAA, just without softmax/normalization. 
@@ -330,4 +296,3 @@ class var_loss_Estimator(BaseEstimator):
             return None, torch.sigmoid(logits).detach().cpu().numpy(), None
         else: 
             raise ValueError(self.mode)
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491

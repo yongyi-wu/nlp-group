@@ -9,29 +9,15 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard.writer import SummaryWriter
-<<<<<<< HEAD
+
 from transformers import BertModel, BertTokenizer
 import pandas as pd
 
 from data import GoEmotionsDataset
-from models import BaselineModel, BaselineEstimator, LeamBERTModel
-from utils import make_if_not_exists, seed_everything, config_logging
-
-=======
-from transformers import BertTokenizer
-import pandas as pd
-
-from data import GoEmotionsDataset
-from models import BaselineModel, BaselineEstimator
+from models import BaselineModel, BaselineEstimator, LeamBERTModel, LabelAwareModel
 from utils import make_if_not_exists, seed_everything, config_logging
 
 #added 
-from transformers import BertTokenizer, BertModel
-
-from models import LabelAwareModel
-
-
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
 
 def parse(): 
     parser = argparse.ArgumentParser('GoEmotions multi-label classifier')
@@ -50,69 +36,14 @@ def parse():
     train.add_argument('--n_epochs', type=int, default=4, help='Number of training epochs')
     train.add_argument('--warmup_proportion', type=float, default=0.1, help='Proportion of training steps to do linear lr warmup')
     train.add_argument('--pred_thold', type=float, default=0.3, help='Threshold for predicting each emotion')
-<<<<<<< HEAD
+
     train.add_argument('--LEAM_RADIUS', type=int, default=2, help='LEAM attention radius')
-=======
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
+
     cfg = parser.parse_args()
     cfg.output_dir = os.path.join(cfg.output_dir, cfg.exp_name)
     return cfg
 
 
-<<<<<<< HEAD
-# def emotion_label_embeddings(emotions, bert_model, tokenizer, non_trainable=False):
-#     label_ids = tokenizer.convert_tokens_to_ids(emotions)
-#     label_embed = bert_model.embeddings.word_embeddings.weight[label_ids]
-#     if non_trainable:
-#         label_embed.weight.requires_grad = False
-#     return label_embed
-
-# def mk_head_model(label_embed, radius, device): 
-#     def mk_head_model_fn(encoded, label_embed, radius): # encoded : bs * n_words * 768, label_embed : n_labels * 768
-    
-#         # similarity matrix G: bs * n_labels * n_words
-#         G = label_embed @ torch.transpose(encoded, 1,2) # bs * n_labels * n_words
-#         G_norm = torch.linalg.norm(label_embed, dim=-1, keepdim=True) @ torch.transpose(torch.linalg.norm(encoded, dim=-1, keepdim=True), 1, 2) # n_labels * n_words
-#         G /= G_norm
-
-#         # attention part: use conv1d
-#         # conv1d + relu
-#         n_words, n_labels = list(encoded.size())[-2], list(label_embed.size())[-2]
-        
-#         conv_layer = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=2*radius+1, padding=radius, stride=1)
-#         relu_layer = nn.ReLU(inplace=False)
-
-#         conv_weight_full = []
-#         for i in range(n_labels):
-#             single_label_input = G[:, i:i+1, :] # bs * 1 * n_words
-#             conv_weight = conv_layer(single_label_input) # bs * 1 * n_words
-#             conv_weight_full.append(conv_weight)
-#         conv_weight_full = torch.cat(conv_weight_full, dim=1).to(device) # bs * n_labels * n_words
-
-#         res = relu_layer(conv_weight_full) # bs * n_labels * n_words
-
-#         # maxpool + softmax: bs * n_words
-#         maxpool_layer = nn.MaxPool1d(n_labels) 
-#         attention_weight = maxpool_layer(torch.transpose(res, 1, 2)) # bs * n_words
-
-#         attention_weight = torch.softmax(attention_weight, dim=-1) # bs * n_words
-#         attention_weight = attention_weight.view(-1, n_words, 1) # bs * n_words * 1
-#         # apply attention_weight to input embeddings
-#         # output dim: bs * 768
-#         z = torch.sum(attention_weight * encoded, dim=1) # inner dim: bs * n_words * 768
-        
-#         # final_transform
-#         linear_layer_1 = nn.Linear(768, n_labels)
-        
-#         return linear_layer_1(z) # bs * n_labels
-
-#     return mk_head_model_fn
-
-
-
-
-=======
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
 def main(): 
     cfg = parse()
     seed_everything(cfg.seed)
@@ -153,16 +84,16 @@ def main():
             is_test=True
         )
         testloader = DataLoader(testset, batch_size=cfg.batch_size, num_workers=4)
-<<<<<<< HEAD
 
-    print('Preparing the model...')
-    # prepare label semantic embedding
 
-    bert_model = BertModel.from_pretrained('bert-base-cased')
-    model = LeamBERTModel(bert_model, tokenizer, emotions, cfg.LEAM_RADIUS).to(device)
-    # model = BaselineModel(bert_model, head_model, len(emotions)).to(device) # TODO: change to your model!
-    criterion = nn.BCEWithLogitsLoss().to(device)
-=======
+    # print('Preparing the model...')
+    # # prepare label semantic embedding
+
+    # bert_model = BertModel.from_pretrained('bert-base-cased')
+    # model = LeamBERTModel(bert_model, tokenizer, emotions, cfg.LEAM_RADIUS).to(device)
+    # # model = BaselineModel(bert_model, head_model, len(emotions)).to(device) # TODO: change to your model!
+    # criterion = nn.BCEWithLogitsLoss().to(device)
+
     print('Preparing the model...')
 
     ## Prepare label ids
@@ -187,7 +118,7 @@ def main():
     ## if you want to use regular CE loss instead of CB loss then do 
     # criterion = nn.BCEWithLogitsLoss().to(device)
     
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
+
     if cfg.no_train: 
         optimizer = None
         scheduler = None
@@ -223,11 +154,11 @@ def main():
         logger=logger, 
         writer=writer, 
         pred_thold=cfg.pred_thold, 
-<<<<<<< HEAD
+
         device=device, 
-=======
+
         device=device,
->>>>>>> 181557d7e18a777702d5b57644c0adb2651ea491
+
         # add other hyperparameters here
     )
 
