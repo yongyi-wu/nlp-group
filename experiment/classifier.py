@@ -34,7 +34,7 @@ def parse():
     train.add_argument('--n_epochs', type=int, default=4, help='Number of training epochs')
     train.add_argument('--warmup_proportion', type=float, default=0.1, help='Proportion of training steps to do linear lr warmup')
     train.add_argument('--pred_thold', type=float, default=0.3, help='Threshold for predicting each emotion')
-    train.add_argument('--LEAM_RADIUS', type=int, default=0, help='LEAM attention radius')
+    train.add_argument('--LEAM_RADIUS', type=int, default=2, help='LEAM attention radius')
     cfg = parser.parse_args()
     cfg.output_dir = os.path.join(cfg.output_dir, cfg.exp_name)
     return cfg
