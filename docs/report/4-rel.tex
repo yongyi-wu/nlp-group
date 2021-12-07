@@ -1,0 +1,14 @@
+
+\paragraph{Emotion Detection Taxonomy}
+Traditionally, researchers use two emotion categorization taxonomies: categorical and dimensional. On the categorical front, Ekman's model divides emotions into 6 fundamental categories (fear, disgust, surprise, joy, anger, sadness), while Plutchik's emotion wheels divide emotions into 8 fundamental types, with each being able to subdivide into subcategories. For dimensional approaches, emotion can be expressed continuously in two dimensions: valence (degree of positivity) and arousal (degree of intensity). GoEmotions dataset extends this traditional taxonomy to $27$ subcategories (excluding neutral), allowing models to learn more fine-grained distinctions between emotions in the corpora. 
+
+
+% \subsection{Label Semantics}
+\paragraph{LEAM} 
+This model \citet{gaonkar2020modeling} deploys a different way to compute the attention weights of the emotion labels towards the input text. To help highlight the emotional information contained in different portions of the input text, instead of using the bilinear key-query attention mechanism as in our model, this approach uses the cosine similarity between each label representations (initialized by the BERT word embeddings of the label word) and each input word representations. The resultant signals are processed by a convolution layer followed by a max pool layer to extract the most salient similarity signal. Finally, we linearly transform the extracted signal and softmax to get the attention weights between label emotions and input words.
+
+\paragraph{Extreme-scale Multi-label Classification}
+In extreme-scale multi-label classification, it is a common practice to introduce label semantics to help model distinguish nuance between different classes (\citet{zhang2018deep}, \citet{you2019attentionxml}, \citet{chang2020taming}). AttentionXML builds a probabilistic label tree to perform classification in a divide-and-conquer fashion wherein a multi-label attention guides labels (or sets of labels) to focus on the most relevant part of a sentence. 
+
+\paragraph{Modeling Label-semantic for predicting emotion reactions}
+Gaonkar et al. found that adding the pretrained label semantics embeddings as input and incorporating the learned correlation between emotions in the loss function improves the performance over the baseline BERT model \citet{gaonkar2020modeling}. Augmenting this method and applying semi-supervised techniques on the unlabeled portion of ROCStories gives the SOTA model with F1-score being 65.88, which is 4.92 points higher than the baseline BERT model. 

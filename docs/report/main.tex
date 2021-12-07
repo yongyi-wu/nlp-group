@@ -1,0 +1,95 @@
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+\usepackage[preprint]{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+    % \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+    % \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+    %  \usepackage[nonatbib]{neurips_2020}
+
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{tikz}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{fullpage,appendix,bm,graphicx}
+
+\usepackage{pythonhighlight}
+\usepackage[ruled,vlined,linesnumbered]{algorithm2e}
+
+\input{math.tex}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\title{Label-Aware Attention for \\ Fine-Grained Emotion Detection}
+
+\author{%
+  Ethan Wu \\
+  \texttt{yongyiw@andrew.cmu.edu} \\
+   \And
+   Yilin Wang \\
+   \texttt{yilinwan@andrew.cmu.edu} \\
+   \And
+   Ziqi Liu \\
+   \texttt{ziqil2@andrew.cmu.edu} \\
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+    Recognizing underlying emotions from plain text enables human to build more intelligent systems, abridging the gap between us and machines. Working on by far the largest manually annotated dataset for emotion detection GoEmotions, we propose a label-aware attention mechanism, where label semantics are leveraged to integrate contextualized representations and inform classification decisions. Combined with the class-balanced loss, our method improves the macro F1 score by 0.06 compared to the baseline classifier, achieving state-of-the-art performance on this emotion detection benchmark. \footnote{Data and code available at \href{https://github.com/yongyi-wu/nlp-group}{https://github.com/yongyi-wu/nlp-group}.}
+\end{abstract}
+
+\section{Introduction}\label{intro}
+\input{1-intro.tex}
+
+\section{Related Work}\label{rel}
+\input{4-rel.tex}
+
+\section{Method}\label{method} % Or "Methods", if you want to talk about algorithms?
+\input{2-method.tex}
+
+\section{Experiments}\label{exp}
+\input{3-exp.tex}
+
+% \section{Results}\label{res}
+% \input{4-res.tex}
+
+%\section{Ablation Studies} \label{ablation}
+%\input{6-ablation.tex}
+
+% \section{Related Work}\label{rel}
+% \input{4-rel.tex}
+
+\section{Conclusion}\label{conc}
+\input{5-conc.tex}
+
+
+\bibliographystyle{plainnat}
+\bibliography{z-ref.bib}
+
+\newpage 
+\appendix
+\section{Additional Results}\label{app}
+\input{appendix.tex}
+
+\end{document}
