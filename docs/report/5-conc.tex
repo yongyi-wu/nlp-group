@@ -1,0 +1,9 @@
+
+
+In conclusion, we propose the Label-Aware Attention(LAA) mechanism, which incorporates label semantics in the model. To address the class unbalance problem, we adopt the class-balanced (CB) loss instead of the regular cross-entropy loss. Among all experiments we performed, the LAA model trained under CB loss performed the best, leading to a 0.06 increase in Marco-average F1 score over the baseline model. Error analysis suggests that the LAA mechanism facilitated NLU in our model. In addition, our model shows much lower variance under different seeds compared to the baseline model, which indicates robustness in the design.
+
+
+From previous error analyses, we argued that the baseline model often fails to distinguish ``neutral" and other emotions. The current error analysis suggests that our proposed method effectively prevents ``neutral" from being classified as other emotions. However, our model does not appear effective in preventing other emotions from being classified as ``neutral". Future work should aim to improve the model's ability to distinguish other emotions from ``neutral". A generative adversarial network (GAN) might be used to achieve this objective. Alternatively, we could consider a two-stage model where the model first performs a binary classification task between ``neutral" and non-neutral, and then assign labels to texts that are classified as non-neutral by the first-stage classifier. 
+
+
+
